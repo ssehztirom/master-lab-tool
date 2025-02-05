@@ -17,14 +17,43 @@ We simulate **5 biomarkers** in EB patients:
 - **B** (BMI) - Body Mass Index
 - **A** (Albumin) - Protein linked to nutrition & liver function
 - **I** (Iron) - Essential mineral for blood function
-
-### Model Parameters
-- **kC0**: Baseline CRP production rate.
-- **kC1**: CRP increase when albumin is low.
-- **kC2**: CRP increase when BMI is low.
-- **delta**: Extra CRP boost for severe patients (Intermediate = 0, Severe > 0).
-- **Other k-values**: Control growth/decay rates for Hemoglobin, BMI, Albumin, and Iron.
 """)
+
+st.markdown("## **ODE System for EB Biomarkers**")
+st.latex(r"""
+\begin{aligned}
+\frac{dC}{dt} &= ((k_{C0} + \delta) + k_{C1} (1 - A / A_0)) C \cdot \max(0, 1 - C / K_C) + k_{C2} (1 - B / B_0) \\
+\frac{dH}{dt} &= - k_{H1} (C - C_0) - k_{H2} (1 - I / I_0) + k_{H3} (H_0 - H) \\
+\frac{dB}{dt} &= k_{B0} (B_0 - B) - k_{B1} (C - C_0) + k_{B2} (H_0 - H) - k_{B3} (1 - A / A_0) \\
+\frac{dA}{dt} &= k_{A0} (A_0 - A) - k_{A1} (C - C_0) - k_{A2} (1 - B / B_0) \\
+\frac{dI}{dt} &= k_{I0} (I_0 - I) - k_{I1} (C - C_0) + k_{I2} (1 - B / B_0) + k_{I3} (1 - A / A_0)
+\end{aligned}
+""")
+
+st.markdown("## **Parameter Explanations**")
+st.markdown("""
+- **\( k_{C0} \)**: Baseline CRP production rate.
+- **\( k_{C1} \)**: How low albumin (\( A \)) boosts CRP production.
+- **\( k_{C2} \)**: Additional CRP increase when BMI (\( B \)) is below baseline.
+- **\( \delta \)**: Extra CRP production shift for severe patients.  
+  - If \( \delta = 0 \), patient is intermediate.  
+  - If \( \delta > 0 \), patient is severe.
+- **\( k_{H1} \)**: How CRP elevation reduces hemoglobin (\( H \)).
+- **\( k_{H2} \)**: Effect of low iron (\( I \)) on hemoglobin.
+- **\( k_{H3} \)**: Rate at which hemoglobin is restored to \( H_0 \).
+- **\( k_{B0} \)**: Rate at which BMI returns to normal.
+- **\( k_{B1} \)**: How CRP elevation reduces BMI.
+- **\( k_{B2} \)**: How low hemoglobin affects BMI.
+- **\( k_{B3} \)**: How low albumin affects BMI.
+- **\( k_{A0} \)**: Albumin recovery rate.
+- **\( k_{A1} \)**: How CRP reduces albumin.
+- **\( k_{A2} \)**: How low BMI affects albumin.
+- **\( k_{I0} \)**: Iron recovery rate.
+- **\( k_{I1} \)**: How CRP reduces iron.
+- **\( k_{I2} \)**: How low BMI affects iron.
+- **\( k_{I3} \)**: How low albumin affects iron.
+""")
+
 
 ##########################
 # 2) Sidebar Inputs
