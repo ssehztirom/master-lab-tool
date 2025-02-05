@@ -30,30 +30,33 @@ st.latex(r"""
 \end{aligned}
 """)
 
+# 2. Display Parameter Explanations in LaTeX
 st.markdown("## **Parameter Explanations**")
-st.markdown("""
-- **\( k_{C0} \)**: Baseline CRP production rate.
-- **\( k_{C1} \)**: How low albumin (\( A \)) boosts CRP production.
-- **\( k_{C2} \)**: Additional CRP increase when BMI (\( B \)) is below baseline.
-- **\( \delta \)**: Extra CRP production shift for severe patients.  
-  - If \( \delta = 0 \), patient is intermediate.  
-  - If \( \delta > 0 \), patient is severe.
-- **\( k_{H1} \)**: How CRP elevation reduces hemoglobin (\( H \)).
-- **\( k_{H2} \)**: Effect of low iron (\( I \)) on hemoglobin.
-- **\( k_{H3} \)**: Rate at which hemoglobin is restored to \( H_0 \).
-- **\( k_{B0} \)**: Rate at which BMI returns to normal.
-- **\( k_{B1} \)**: How CRP elevation reduces BMI.
-- **\( k_{B2} \)**: How low hemoglobin affects BMI.
-- **\( k_{B3} \)**: How low albumin affects BMI.
-- **\( k_{A0} \)**: Albumin recovery rate.
-- **\( k_{A1} \)**: How CRP reduces albumin.
-- **\( k_{A2} \)**: How low BMI affects albumin.
-- **\( k_{I0} \)**: Iron recovery rate.
-- **\( k_{I1} \)**: How CRP reduces iron.
-- **\( k_{I2} \)**: How low BMI affects iron.
-- **\( k_{I3} \)**: How low albumin affects iron.
-""")
 
+st.latex(r"k_{C0}: \text{ Baseline CRP production rate.}")
+st.latex(r"k_{C1}: \text{ How low albumin } (A) \text{ boosts CRP production.}")
+st.latex(r"k_{C2}: \text{ Additional CRP increase when BMI } (B) \text{ is below baseline.}")
+st.latex(r"\delta: \text{ Extra CRP production shift for severe patients.}")
+st.latex(r" \quad \text{If } \delta = 0, \text{ patient is intermediate.}")
+st.latex(r" \quad \text{If } \delta > 0, \text{ patient is severe.}")
+
+st.latex(r"k_{H1}: \text{ How CRP elevation reduces hemoglobin } (H).")
+st.latex(r"k_{H2}: \text{ Effect of low iron } (I) \text{ on hemoglobin.}")
+st.latex(r"k_{H3}: \text{ Rate at which hemoglobin is restored to } H_0.")
+
+st.latex(r"k_{B0}: \text{ Rate at which BMI returns to normal.}")
+st.latex(r"k_{B1}: \text{ How CRP elevation reduces BMI.}")
+st.latex(r"k_{B2}: \text{ How low hemoglobin affects BMI.}")
+st.latex(r"k_{B3}: \text{ How low albumin affects BMI.}")
+
+st.latex(r"k_{A0}: \text{ Albumin recovery rate.}")
+st.latex(r"k_{A1}: \text{ How CRP reduces albumin.}")
+st.latex(r"k_{A2}: \text{ How low BMI affects albumin.}")
+
+st.latex(r"k_{I0}: \text{ Iron recovery rate.}")
+st.latex(r"k_{I1}: \text{ How CRP reduces iron.}")
+st.latex(r"k_{I2}: \text{ How low BMI affects iron.}")
+st.latex(r"k_{I3}: \text{ How low albumin affects iron.}")
 
 ##########################
 # 2) Sidebar Inputs
