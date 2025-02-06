@@ -394,7 +394,7 @@ std_C_se = st.sidebar.number_input('Severe CRP', value=55.0)
 # Sidebar option to visualize distributions
 if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
     st.markdown("## Initial Conditions Distributions")
-    st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and standard deviations for the intermediate and severe groups.")
+    st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
 
     # Visualize intermediate group distribution
     plot_initial_conditions_distributions(
