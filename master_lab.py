@@ -362,8 +362,21 @@ st.sidebar.title("Adjust Parameters")
 # - **Initial Conditions**: Mean values for the initial quantities of each cell type.
 # """)
 
-# Add a brief description
-st.sidebar.markdown(""" Please enter mean of each biomarker measured at birth for the intermediate and severe patient group. For CRP, also include standard deviation (std). """)
+st.sidebar.markdown("""
+### Enter Initial Biomarker Values
+
+Please enter the **mean values** for hemoglobin, BMI, albumin, and iron.  
+These values define the **initial conditions** of the biomarkers,  
+which are assumed to follow **normal distributions**.  
+
+For CRP, which follows a **log-normal distribution**, enter both **mean** and **standard deviation**.  
+
+**Note:** The standard deviations for hemoglobin, BMI, albumin, and iron are **predefined** and do not require input.  
+
+#### 🔍 What Does This Mean?
+- The distributions specified here are used **to generate the initial conditions** of the biomarkers.  
+- The **mean** and **standard deviation** you enter for CRP are in the **original (linear) scale**. They will be **transformed into log-space parameters** before generating CRP samples.
+""")
 
 
 # Initial conditions
