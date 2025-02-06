@@ -365,14 +365,19 @@ st.sidebar.title("Adjust Parameters")
 st.sidebar.markdown("""
 ### Enter Initial Biomarker Values
 
-Please enter the **mean values** for hemoglobin, BMI, albumin, and iron.  
-These values define the **initial conditions** of the biomarkers,  
-which are assumed to follow **normal distributions**.  
+Enter the **mean values** for hemoglobin, BMI, albumin, and iron,  
+as well as **mean** and **standard deviation** for CRP.  
 
-For CRP, which follows a **log-normal distribution**, enter both **mean_C** and **std_C**.  
-
-**Note:** The standard deviations for hemoglobin, BMI, albumin, and iron are **predefined** and do not require input.
+**Note:** Standard deviations for hemoglobin, BMI, albumin, and iron are **predefined**.
 """)
+
+with st.sidebar.expander("🔍 What Distributions Are Used?"):
+    st.markdown("""
+    - The initial conditions for hemoglobin, BMI, albumin, and iron follow **normal distributions**.  
+    - CRP follows a **log-normal distribution**, meaning the **mean** and **standard deviation** you enter  
+      are in the **original (linear) scale** and will be transformed into log-space parameters  
+      before generating CRP samples.
+    """)
 
 # Collapsible explanation section
 with st.sidebar.expander("🔍 What Does This Mean?"):
