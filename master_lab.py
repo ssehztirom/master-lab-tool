@@ -215,7 +215,7 @@ def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A,
     axes[0, 0].set_title("CRP Distribution")
     axes[0, 0].set_xlabel("CRP")
     axes[0, 0].set_ylabel("Frequency")
-    axes[0, 0].set_xlim(0, 200)  # Adjusted x-axis limits for clarity
+    axes[0, 0].set_xlim(0, 150)  # Adjusted x-axis limits for clarity
 
     sns.histplot(H_samples, kde=True, ax=axes[0, 1], color="mediumseagreen", edgecolor="black", alpha=0.7)
     axes[0, 1].set_title("Haemoglobin Distribution")
