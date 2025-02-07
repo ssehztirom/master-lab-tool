@@ -299,7 +299,7 @@ with st.expander("📊 **Mathematical Explanation**"):
 with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
     $$ \frac{dX}{dt} = \text{Growth} + \text{Influence from Others} $$
-    where $ \( X \in \{C, H, W, A, I\} \) $.
+    where $$ \( X \in \{C, H, W, A, I\} \) $$.
 
     - The equation $ \frac{dX}{dt} $ describes **how a biomarker changes over time**.  
     - Growth follows a **logistic growth model**:  $$ r_X X \left(1 - \frac{X}{K_X} \right) $$ 
