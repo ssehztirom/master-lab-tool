@@ -548,35 +548,27 @@ def plot_fixed_biomarker_trajectories():
     fig.suptitle("ODE Simulation of Biomarkers", fontsize=16, weight='bold')
 
     for i, ax in enumerate(axes):
-        ax.set_title(biomarkers[i], fontsize=14, weight="bold")
+        ax.set_title(biomarkers[i])
         ax.set_ylabel("Value")
         ax.set_xlabel("Age (years)")
-        ax.grid(True)
+        ax.grid(False)
 
-        # Scatter plot of preloaded patient data (lighter colors, smaller points, more transparency)
+        # Scatter plot of preloaded patient data (lighter colors)
         if "baseline_data" in st.session_state:
             for patient in st.session_state["baseline_data"]:
-                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.2, s=10, label="Baseline Patients")
+                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.3, s=15)
 
-        # Plot percentiles (thinner, dashed, lighter)
-        if "percentiles" in st.session_state:
-            percentiles = st.session_state["percentiles"]
-            time_grid = st.session_state["time_grid"]
-
-            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="gray", linewidth=1, label="5th percentile")
-            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="gray", linewidth=1.5, label="50th percentile (Median)")
-            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="gray", linewidth=1, label="95th percentile")
-
-        # Overlay user-generated patient trajectories (thicker, slightly transparent)
+        # Overlay user-generated patient trajectories in darker colors
         if "simulation_results" in st.session_state:
             patient_data = st.session_state["simulation_results"]
             for patient in patient_data:
-                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.7, label="Simulated Patients")
+                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
 
         ax.legend()
 
     plt.tight_layout()
     st.pyplot(fig)
+
 
 
 
