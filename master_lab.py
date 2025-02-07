@@ -298,7 +298,12 @@ with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
       - Similarly, when $ \alpha_{AW} < 0 $, a higher weight ($ W $) suppresses the growth of albumin ($ A $).  
     """)
 
-
+with st.expander("🛎️ **Instructions**"):
+    st.markdown(r"""
+    - Adjust the parameters in the sidebar, where each parameter includes a brief description. 
+    - Click **"Run Simulation"** to update the results.
+    - Click **"Save Parameters"** to store the parameter settings you find reasonable.
+    """)
 
 
 
