@@ -259,25 +259,26 @@ st.markdown("""
 st.header("ODE System for EB Biomarkers")
 
 # Display the ODE System
+
 st.latex(r"""
 \begin{aligned}
-\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{200} \right) \\
-\frac{dH}{dt} &= r_H H \left(1 - \frac{H}{15} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right) \\
-\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{25} \right) \\
-\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{5} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right) \\
-\frac{dI}{dt} &= r_I I \left(1 - \frac{I}{160} \right)
+\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{K_C} \right) \\
+\frac{dH}{dt} &= r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right) \\
+\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{K_W} \right) \\
+\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right) \\
+\frac{dI}{dt} &= r_I I \left(1 - \frac{I}{K_I} \right)
 \end{aligned}
 """)
 
 st.latex(r"""
-\begin{aligned}
-\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{K_C} \right), \quad K_C = 200 \\
-\frac{dH}{dt} &= r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right), \quad K_H = 15 \\
-\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{K_W} \right), \quad K_W = 25 \\
-\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right), \quad K_A = 5 \\
-\frac{dI}{dt} &= r_I I \left(1 - \frac{I}{K_I} \right), \quad K_I = 160
-\end{aligned}
+\text{where} \quad 
+K_C = 200, \quad
+K_H = 15, \quad
+K_W = 25, \quad
+K_A = 5, \quad
+K_I = 160.
 """)
+
 
 
 
