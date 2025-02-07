@@ -307,15 +307,6 @@ with st.expander("🛎️ **Instructions**"):
 
 
 
-
-st.markdown("""
-**Instructions:**
-- Adjust the parameters in the sidebar, where each parameter includes a brief description. 
-- Click **"Run Simulation"** to update the results.
-- Click **"Save Parameters"** to store the parameter settings you find reasonable.
-""")
-
-
 # --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Sidebar parameters
