@@ -496,21 +496,21 @@ time_points_simu = generate_patient_time_points(num_patients, max_time)
 
 # Generate initial conditions for 20 patients
 simu_init = generate_initial_conditions(
-    num_patients, mean_C_simu_inter, std_C_inter,
-    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter
+    num_patients, 19, 29,
+    10.6, 14, 3.8, 32.5
 )
 
 # Define ODE parameters
 maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
-params = [r_C1, r_H1, r_W1, r_A1, r_I1, alpha_HI1, alpha_AW1]
-noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
+params = [0.1, -0.1, -0.05, -0.1, -0.1, 0.05, 0.05]
+noise_std = [40 * 0.1, 2.5 * 0.1, 2.3 * 0.1, 0.9 * 0.1, 21 * 0.1]
 
 # Simulate patient data
 final_data = concatenate_data_diff_noise(
         simu_init, time_points_simu,
-        maxes, params, noise_std, noise=add_noise, type='hypo'
+        maxes, params, noise_std, noise=True, type='hypo'
     )
-# simulate_patient_data(num_patients, time_points_simu, simu_init, maxes, params, noise_std, add_noise)
+# simulate_patient_data(num_patients, time_points_simu, simu_init, maxes, params, noise_std, True)
 
 # Create a common time grid (0 to 15 years)
 time_grid = np.linspace(0, max_time, 50)
