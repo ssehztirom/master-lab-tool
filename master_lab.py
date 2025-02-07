@@ -269,6 +269,17 @@ st.latex(r"""
 \end{aligned}
 """)
 
+st.latex(r"""
+\begin{aligned}
+\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{K_C} \right), \quad K_C = 200 \\
+\frac{dH}{dt} &= r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right), \quad K_H = 15 \\
+\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{K_W} \right), \quad K_W = 25 \\
+\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right), \quad K_A = 5 \\
+\frac{dI}{dt} &= r_I I \left(1 - \frac{I}{K_I} \right), \quad K_I = 160
+\end{aligned}
+""")
+
+
 
 with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
