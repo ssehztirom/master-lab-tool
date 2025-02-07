@@ -378,7 +378,7 @@ mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0)
 mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0)
 
 st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_inter = st.sidebar.number_input('CRP', value=0.0)
+std_C_inter = st.sidebar.number_input('std CRP', value=0.0)
 
 
 # Sidebar option to visualize distributions
