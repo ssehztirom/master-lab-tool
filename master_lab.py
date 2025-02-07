@@ -22,7 +22,7 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
         client = gspread.authorize(credentials)
 
         # Access the sheet
-        sheet = client.open("ODE-parameters").sheet1
+        sheet = client.open("ODE-parameters").sheet2
         
         # Prepare the data to append
         data = [name, comment] + parameters + [add_variability, variability_level] + birth_means_var
