@@ -165,7 +165,7 @@ def plot_simulation(final_data):
         st.pyplot(fig)
 
 
-def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A, mean_I, group_name):
+def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A, mean_I):
     num_samples = 1000  # Number of samples to plot the distributions
 
     # Generate samples for each biomarker
@@ -177,14 +177,14 @@ def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A,
 
     # Create subplots with two rows: first row for CRP and Hemoglobin, second row for BMI, Albumin, and Iron
     fig, axes = plt.subplots(2, 3, figsize=(20, 12))
-    fig.suptitle(f"Initial Conditions Distributions ({group_name})", fontsize=16, weight='bold')
+    fig.suptitle(f"Initial Conditions Distributions)", fontsize=16, weight='bold')
 
     # Plot each biomarker with appropriate spacing and axis limits
     sns.histplot(C_samples, kde=True, ax=axes[0, 0], color="royalblue", edgecolor="black", alpha=0.7)
     axes[0, 0].set_title("CRP Distribution")
     axes[0, 0].set_xlabel("CRP")
     axes[0, 0].set_ylabel("Frequency")
-    axes[0, 0].set_xlim(0, 200 if group_name == "Intermediate" else 500)  # Adjusted x-axis limits for clarity
+    axes[0, 0].set_xlim(0, 200)  # Adjusted x-axis limits for clarity
 
     sns.histplot(H_samples, kde=True, ax=axes[0, 1], color="mediumseagreen", edgecolor="black", alpha=0.7)
     axes[0, 1].set_title("Haemoglobin Distribution")
@@ -372,8 +372,7 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
         mean_H=mean_H_simu_inter,
         mean_W=mean_W_simu_inter,
         mean_A=mean_A_simu_inter,
-        mean_I=mean_I_simu_inter,
-        group_name="Intermediate"
+        mean_I=mean_I_simu_inter
     )
     
 
