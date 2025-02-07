@@ -567,8 +567,7 @@ percentiles = compute_percentiles(final_data, time_grid)
 # st.markdown("## Biomarker Simulations")
 # plot_biomarker_trajectories(final_data, percentiles, time_grid)
 
-st.markdown("## Biomarker Simulations")
-plot_fixed_biomarker_trajectories()
+
 
 
 if st.sidebar.button('Run Simulation'):
@@ -598,9 +597,9 @@ if st.sidebar.button('Run Simulation'):
     # Store in session state to update the plot
     st.session_state["simulation_results"] = final_data
 
-    # Refresh the fixed plots with new data
-    st.experimental_rerun()
-
+# Plot after the session state is updated
+st.markdown("## Biomarker Simulations")
+plot_fixed_biomarker_trajectories()
 
 
 
