@@ -358,7 +358,7 @@ with st.sidebar.expander("🔍 What Distributions Are Used?"):
 with st.sidebar.expander("🔍 What Does This Mean?"):
     st.markdown("""
     - The distributions specified here are used **to generate the initial conditions** of the biomarkers.  
-    - The **mean** and **std** you enter for CRP are in the **original (linear) scale**.  
+    - The **mean** and **standard deviation** you enter for CRP are in the **original (linear) scale**.  
     - They will be **transformed into log-space parameters** before generating CRP samples.
     """)
 
