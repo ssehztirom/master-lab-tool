@@ -375,7 +375,7 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
         mean_I=mean_I_simu_inter,
         group_name="Intermediate"
     )
-    )
+    
 
 
 
