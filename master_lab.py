@@ -525,12 +525,38 @@ percentiles = compute_percentiles(final_data, time_grid)
 
 
 # Store baseline data in session state
-if "baseline_data" not in st.session_state:
-    st.session_state["baseline_data"] = final_data
+# if "baseline_data" not in st.session_state:
+    # st.session_state["baseline_data"] = final_data
 
 # Compute percentiles and store them
+# if "percentiles" not in st.session_state:
+    # st.session_state["percentiles"] = compute_percentiles(final_data, time_grid)
+
+
+
+if "baseline_data" not in st.session_state:
+    num_patients = 20
+    max_time = 15
+
+    time_points_simu = generate_patient_time_points(num_patients, max_time)
+
+    simu_init = generate_initial_conditions(
+        num_patients, 19, 29, 10.6, 14, 3.8, 32.5
+    )
+
+    maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
+    params = [0.1, -0.1, -0.05, -0.1, -0.1, 0.05, 0.05]
+    noise_std = [40 * 0.1, 2.5 * 0.1, 2.3 * 0.1, 0.9 * 0.1, 21 * 0.1]
+
+    st.session_state["baseline_data"] = concatenate_data_diff_noise(
+        simu_init, time_points_simu, maxes, params, noise_std, noise=True, type='hypo'
+    )
+
 if "percentiles" not in st.session_state:
-    st.session_state["percentiles"] = compute_percentiles(final_data, time_grid)
+    time_grid = np.linspace(0, max_time, 50)  # Ensure `time_grid` is initialized
+    st.session_state["percentiles"] = compute_percentiles(st.session_state["baseline_data"], time_grid)
+
+
 
 # Store time grid for reference
 if "time_grid" not in st.session_state:
