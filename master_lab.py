@@ -22,7 +22,7 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
         client = gspread.authorize(credentials)
 
         # Access the sheet
-        sheet = client.open("ODE-parameters").sheet2
+        sheet = client.open("ODE-parameters").sheet1
         
         # Prepare the data to append
         data = [name, comment] + parameters + [add_variability, variability_level] + birth_means_var
@@ -48,7 +48,7 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
         client = gspread.authorize(credentials)
 
         # Access the Google Sheet
-        sheet = client.open("ODE-parameters").sheet1
+        sheet = client.open("ODE-parameters").sheet2
         
         # Find the first empty row in Column A
         next_row = find_empty_row(sheet)
