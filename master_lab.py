@@ -11,27 +11,6 @@ params1 = []
 if 'parameters_saved' not in st.session_state:
     st.session_state['parameters_saved'] = False
 
-'''
-def save_parameters(name, comment, parameters, add_variability, variability_level, birth_means_var):
-    try:
-        # Use credentials from Streamlit secrets
-        credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-            st.secrets["google_service_account"],
-            scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-        )
-        client = gspread.authorize(credentials)
-
-        # Access the sheet
-        sheet = client.open("ODE-parameters").sheet1
-        
-        # Prepare the data to append
-        data = [name, comment] + parameters + [add_variability, variability_level] + birth_means_var
-        
-        # Append the data as a new row
-        sheet.append_row(data)
-    except gspread.exceptions.APIError as e:
-        st.error(f"API Error: {e}")
-'''
 
 def find_empty_row(sheet):
     """Find the first empty row in Column A."""
@@ -486,7 +465,7 @@ def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
     biomarkers = ['CRP', 'Haemoglobin', 'BMI', 'Albumin', 'Iron']
     colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'plum']
 
-    fig, axes = plt.subplots(1, 5, figsize=(25, 5), sharey=False)
+    fig, axes = plt.subplots(5, 1, figsize=(8, 25), sharex=True)
     fig.suptitle("ODE Simulation of Biomarkers with Percentiles", fontsize=16, weight='bold')
 
     for i, ax in enumerate(axes):
@@ -500,11 +479,11 @@ def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
         ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
 
         ax.set_title(biomarkers[i])
-        ax.set_xlabel("Age (years)")
         ax.set_ylabel("Value")
         ax.legend()
 
-    plt.tight_layout()
+    axes[-1].set_xlabel("Age (years)")  # Set x-axis label only on the last plot
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust spacing
     st.pyplot(fig)
 
 # Automatically generate and display the plots when the app loads
