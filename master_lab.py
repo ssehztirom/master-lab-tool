@@ -59,7 +59,7 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
         # Insert data into the first empty row (starting from column A)
         sheet.insert_row(data, next_row)
 
-        st.success(f"Data successfully saved in row {next_row}.")
+        st.success(f"Parameters successfully saved in row {next_row}.")
 
     except gspread.exceptions.APIError as e:
         st.error(f"API Error: {e}")
@@ -530,8 +530,8 @@ if st.sidebar.button('Save Parameters'):
         st.session_state['parameters_saved'] = True  # Set flag to True after saving
 
 # Display the success message only once
-if st.session_state['parameters_saved']:
-    st.success("Parameters saved successfully!")
+# if st.session_state['parameters_saved']:
+    # st.success("Parameters saved successfully!")
     
 
 
