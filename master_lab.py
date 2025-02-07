@@ -577,10 +577,19 @@ def plot_fixed_biomarker_trajectories():
             # for patient in patient_data:
                 # ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
 
-            for patient in st.session_state["simulation_results"]:
-                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8, label="Patient Trajectory", marker='o', markersize=5)
+            # for patient in st.session_state["simulation_results"]:
+                # ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8, label="Patient Trajectory", marker='o', markersize=5)
 
-                # ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=3, alpha=1, label="Patient Trajectory")
+            # Define a list of different marker styles
+            marker_styles = ['o', 's', 'D', '^', 'v', 'p', '*', 'X', '<', '>']
+            
+            # Overlay user-generated patient trajectories with different markers
+            if "simulation_results" in st.session_state:
+                for idx, patient in enumerate(st.session_state["simulation_results"]):
+                    marker = marker_styles[idx % len(marker_styles)]  # Cycle through markers
+                    ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8, 
+                            label=f"Patient {idx + 1}", marker=marker, markersize=5)
+
 
         
         ax.legend()
