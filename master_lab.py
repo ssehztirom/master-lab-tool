@@ -537,8 +537,8 @@ if "time_grid" not in st.session_state:
 def plot_fixed_biomarker_trajectories():
     """Creates fixed plots for biomarkers that update dynamically after simulation."""
     biomarkers = ['CRP', 'Haemoglobin', 'BMI', 'Albumin', 'Iron']
-    colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'plum']
-    dark_colors = ['navy', 'darkgreen', 'firebrick', 'goldenrod', 'purple']  # Darker shades for simulated patients
+    colors = ['royalblue', 'mediumseagreen', 'salmon', 'orange', 'plum']
+    dark_colors = ['navy', 'darkgreen', 'firebrick', 'darkorange', 'purple']  # Darker shades for simulated patients
 
     fig, axes = plt.subplots(5, 1, figsize=(8, 25), sharex=True)
     # fig.suptitle("ODE Simulation of Biomarkers", fontsize=16, weight='bold')
