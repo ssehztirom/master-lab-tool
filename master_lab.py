@@ -264,8 +264,8 @@ st.latex(r"""
 \begin{aligned}
 \frac{dC}{dt} &= r_C C \left(1 - \frac{C}{K_C} \right) \\
 \frac{dH}{dt} &= r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right) \\
-\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{K_W} \right) \\
-\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right) \\
+\frac{dB}{dt} &= r_B B \left(1 - \frac{B}{K_B} \right) \\
+\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AB} \left(\frac{B}{K_B} \right) \\
 \frac{dI}{dt} &= r_I I \left(1 - \frac{I}{K_I} \right)
 \end{aligned}
 """)
@@ -274,7 +274,7 @@ st.latex(r"""
 \text{where} \quad 
 K_C = 200, \quad
 K_H = 15, \quad
-K_W = 25, \quad
+K_B = 25, \quad
 K_A = 5, \quad
 K_I = 160.
 """)
@@ -286,7 +286,7 @@ with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
     $$ \frac{dX}{dt} = \text{Growth} + \text{Influence from Others} $$
 
-    where $$ X \in \{C, H, W, A, I\} $$
+    where $$ X \in \{C, H, B, A, I\} $$
 
     - The equation $ \frac{dX}{dt} $ describes **how a biomarker changes over time**.  
     - Growth follows a **logistic growth model**:  
@@ -305,9 +305,9 @@ with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
       
       - When $ \alpha_{HI} > 0 $, an increase in iron ($ I $) promotes the growth of hemoglobin ($ H $).  
       
-      $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \frac{W}{K_W} $$  
+      $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AB} \frac{B}{K_B} $$  
       
-      - Similarly, when $ \alpha_{AW} < 0 $, a higher weight ($ W $) suppresses the growth of albumin ($ A $).  
+      - Similarly, when $ \alpha_{AB} < 0 $, a higher BMI ($ B $) suppresses the growth of albumin ($ A $).  
     """)
 
 with st.expander("🛎️ **Instructions**"):
@@ -404,7 +404,10 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
 # Parameters to adjust
 st.sidebar.markdown("## Growth/Deacay Rate of Different Biomarkers")
 st.sidebar.markdown("A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.")
-r_C1 = st.sidebar.slider('CRP', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+st.sidebar.markdown(r"$r_C$ (CRP Growth Rate)")
+r_C1 = st.sidebar.slider("", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+
+# r_C1 = st.sidebar.slider('CRP', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_H1 = st.sidebar.slider('Haemoglobin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_W1 = st.sidebar.slider('BMI', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_A1 = st.sidebar.slider('Albumin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
