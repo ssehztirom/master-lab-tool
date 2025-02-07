@@ -556,7 +556,7 @@ def plot_fixed_biomarker_trajectories():
         # Scatter plot of preloaded patient data (lighter colors)
         if "baseline_data" in st.session_state:
             for patient in st.session_state["baseline_data"]:
-                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.3, s=15, label="Baseline Patients")
+                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.3, s=15)
 
         # Plot percentiles
         if "percentiles" in st.session_state:
@@ -571,12 +571,13 @@ def plot_fixed_biomarker_trajectories():
         if "simulation_results" in st.session_state:
             patient_data = st.session_state["simulation_results"]
             for patient in patient_data:
-                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8, label="Simulated Patients")
+                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
 
         ax.legend()
 
     plt.tight_layout()
     st.pyplot(fig)
+
 
 
 
