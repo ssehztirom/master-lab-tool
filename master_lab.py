@@ -342,6 +342,125 @@ st.markdown("""
 - Click **"Save Parameters"** to store the parameter settings you find reasonable.
 """)
 
+
+import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import math
+from scipy.stats import lognorm
+
+# Function to generate different time points per patient
+def generate_patient_time_points(num_patients, max_time=15):
+    time_points = []
+    for _ in range(num_patients):
+        num_time_steps = np.random.randint(5, 20)  # Random number of time points per patient
+        time_points.append(sorted(np.random.uniform(0, max_time, num_time_steps)))
+    return time_points
+
+# Function to simulate ODE solutions for multiple patients
+def simulate_patient_data(num_patients, time_points, init_conditions, maxes, params, noise_std, add_noise):
+    all_patient_data = []
+
+    for i in range(num_patients):
+        t = np.array(time_points[i])
+        y0 = init_conditions[:, i]
+        
+        # Solve ODE
+        patient_data = euler_method(ode_system, y0, t, *maxes, *params)
+        
+        # Apply noise
+        if add_noise:
+            patient_data = process_data(patient_data, len(t), noise_std, True)
+
+        # Store each patient’s data
+        patient_data = np.hstack([patient_data, t.reshape(-1, 1)])  # Add time column
+        all_patient_data.append(patient_data)
+
+    return all_patient_data
+
+# Compute percentiles across all patients at each time step
+def compute_percentiles(all_patient_data, time_grid, num_biomarkers=5):
+    percentiles = {p: np.zeros((len(time_grid), num_biomarkers)) for p in [5, 50, 95]}
+
+    for i, t in enumerate(time_grid):
+        biomarker_values = [[] for _ in range(num_biomarkers)]
+
+        # Collect values for each biomarker at time t
+        for patient_data in all_patient_data:
+            closest_idx = np.argmin(np.abs(patient_data[:, -1] - t))  # Closest time point
+            for j in range(num_biomarkers):
+                biomarker_values[j].append(patient_data[closest_idx, j])
+
+        # Compute percentiles for each biomarker
+        for j in range(num_biomarkers):
+            percentiles[5][i, j] = np.percentile(biomarker_values[j], 5)
+            percentiles[50][i, j] = np.percentile(biomarker_values[j], 50)
+            percentiles[95][i, j] = np.percentile(biomarker_values[j], 95)
+
+    return percentiles
+
+# Plot five separate figures for each biomarker
+def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
+    biomarkers = ['CRP', 'Haemoglobin', 'BMI', 'Albumin', 'Iron']
+    colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'plum']
+
+    fig, axes = plt.subplots(1, 5, figsize=(25, 5), sharey=False)
+    fig.suptitle("ODE Simulation of Biomarkers with Percentiles", fontsize=16, weight='bold')
+
+    for i, ax in enumerate(axes):
+        # Scatter plot of all patient data
+        for patient_data in all_patient_data:
+            ax.scatter(patient_data[:, -1], patient_data[:, i], color=colors[i], alpha=0.3, s=15)
+
+        # Plot percentiles
+        ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="black", label="5th percentile")
+        ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", label="50th percentile (Median)")
+        ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
+
+        ax.set_title(biomarkers[i])
+        ax.set_xlabel("Age (years)")
+        ax.set_ylabel("Value")
+        ax.legend()
+
+    plt.tight_layout()
+    st.pyplot(fig)
+
+# Automatically generate and display the plots when the app loads
+num_patients = 20
+max_time = 15
+
+# Generate different time points per patient
+time_points_simu = generate_patient_time_points(num_patients, max_time)
+
+# Generate initial conditions for 20 patients
+simu_init = generate_initial_conditions(
+    num_patients, mean_C_simu_inter, std_C_inter,
+    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter
+)
+
+# Define ODE parameters
+maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
+params = [r_C1, r_H1, r_W1, r_A1, r_I1, alpha_HI1, alpha_AW1]
+noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
+
+# Simulate patient data
+final_data = simulate_patient_data(num_patients, time_points_simu, simu_init, maxes, params, noise_std, add_noise)
+
+# Create a common time grid (0 to 15 years)
+time_grid = np.linspace(0, max_time, 50)
+
+# Compute percentiles across all patients
+percentiles = compute_percentiles(final_data, time_grid)
+
+# Display the plots immediately
+st.markdown("## Biomarker Simulations")
+plot_biomarker_trajectories(final_data, percentiles, time_grid)
+
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Sidebar parameters
 st.sidebar.title("Adjust Parameters")
 
