@@ -69,6 +69,17 @@ def euler_method(func, y0, t, *args):
     solu = np.array(ys)
     return solu
 
+def euler_method_fast(func, y0, t, *args):
+    t = np.asarray(t)
+    n_steps = t.shape[0]
+    n_vars = y0.shape[0]
+    ys = np.empty((n_steps, n_vars))
+    ys[0] = y0
+    for i in range(1, n_steps):
+        dt = t[i] - t[i - 1]
+        ys[i] = ys[i - 1] + func(ys[i - 1], t[i - 1], *args) * dt
+    return ys
+
 def apply_noise(data, size, noise_std):
     noise_C = np.random.normal(0, noise_std[0], size)
     noise_H = np.random.normal(0, noise_std[1], size)
@@ -91,15 +102,6 @@ def process_data(data, size, noise, noise_std):
 
 
 def concatenate_data_diff_noise(init, time_points, maxes, cali_params, noise_std, noise, type='hypo', inter_num=None):
-    if type == 'real':
-        if inter_num is None:
-            raise ValueError("inter_num must be provided when type is 'real'")
-        inter_time_points = time_points[:inter_num]
-        se_time_points = time_points[inter_num:]        
-    else:
-        mid_index = len(time_points) // 2
-        inter_time_points = time_points[:mid_index]
-        se_time_points = time_points[mid_index:]
 
     final_data = []
     K_C, K_H, K_W, K_A, K_I = maxes
@@ -108,7 +110,7 @@ def concatenate_data_diff_noise(init, time_points, maxes, cali_params, noise_std
     for idx, t in enumerate(time_points):
         t = np.array(t)
         y0 = init[:, idx]
-        inter = euler_method(ode_system, y0, t, K_C, K_H, K_W, K_A, K_I,
+        inter = euler_method_fast(ode_system, y0, t, K_C, K_H, K_W, K_A, K_I,
                              r_C, r_H, r_W, r_A, r_I,
                              alpha_HI, alpha_AW)
         size = inter.shape[0]
@@ -118,6 +120,9 @@ def concatenate_data_diff_noise(init, time_points, maxes, cali_params, noise_std
         final_data.append(inter)
 
     return final_data
+
+
+
 
 def resample_positive(mean, std, size):
     values = np.random.normal(loc=mean, scale=std, size=size)
