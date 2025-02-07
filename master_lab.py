@@ -602,6 +602,19 @@ def plot_fixed_biomarker_trajectories():
 
 
 
+def generate_random_time_points(num_patients, max_time=15):
+    time_points = []
+    for _ in range(num_patients):
+        num_time_steps = np.random.randint(4, 18)  # Generate 4-18 random points (excluding start & end)
+
+        # Generate random time points (excluding 0 and max_time)
+        random_times = sorted(np.random.uniform(0, max_time, num_time_steps))
+
+        # Ensure first and last points are 0 and max_time
+        full_time_series = [0] + random_times + [max_time]
+        time_points.append(full_time_series)
+    
+    return time_points
 
 
 
