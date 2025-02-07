@@ -261,11 +261,11 @@ st.header("ODE System for EB Biomarkers")
 # Display the ODE System
 st.latex(r"""
 \begin{aligned}
-\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{K_C} \right) \\
-\frac{dH}{dt} &= r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right) \\
-\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{K_W} \right) \\
-\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right) \\
-\frac{dI}{dt} &= r_I I \left(1 - \frac{I}{K_I} \right)
+\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{200} \right) \\
+\frac{dH}{dt} &= r_H H \left(1 - \frac{H}{15} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right) \\
+\frac{dW}{dt} &= r_W W \left(1 - \frac{W}{25} \right) \\
+\frac{dA}{dt} &= r_A A \left(1 - \frac{A}{5} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right) \\
+\frac{dI}{dt} &= r_I I \left(1 - \frac{I}{160} \right)
 \end{aligned}
 """)
 
@@ -299,22 +299,31 @@ with st.expander("📊 **Mathematical Explanation**"):
 with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
     $$ \frac{dX}{dt} = \text{Growth} + \text{Influence from Others} $$
-    where $ X \in \{C, H, W, A, I\} $.
+
+    where $$ X \in \{C, H, W, A, I\} $$
 
     - The equation $ \frac{dX}{dt} $ describes **how a biomarker changes over time**.  
     - Growth follows a **logistic growth model**:  
-      $$ r_X X \left(1 - \frac{X}{K_X} \right) $$ 
-      - The term $ r_X X $ represents **natural growth**.
+      
+      $$ r_X X \left(1 - \frac{X}{K_X} \right) $$  
+      
+      - The term $ r_X X $ represents **natural growth**.  
       - The factor $ \left(1 - \frac{X}{K_X} \right) $ ensures that growth slows  
         as $ X $ approaches its **carrying capacity** $ K_X $, which is predefined.  
 
     - Some biomarkers are **linked**:  
-      e.g.  
+      
+      **Example:**  
+      
       $$ \frac{dH}{dt} = r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \frac{I}{K_I} $$  
+      
       - When $ \alpha_{HI} > 0 $, an increase in iron ($ I $) promotes the growth of hemoglobin ($ H $).  
+      
       $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \frac{W}{K_W} $$  
+      
       - Similarly, when $ \alpha_{AW} > 0 $, a higher weight ($ W $) supports the growth of albumin ($ A $).  
     """)
+
 
 
 
