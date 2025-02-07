@@ -343,12 +343,84 @@ st.markdown("""
 """)
 
 
-import streamlit as st
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import math
-from scipy.stats import lognorm
+# --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Sidebar parameters
+st.sidebar.title("Adjust Parameters")
+
+# st.sidebar.markdown("### Simulation Parameters")
+
+
+# Explanation for parameters
+# st.sidebar.info("""
+# # **Parameters:**
+
+# - **Growth Rates (r_C, r_H, r_W, r_A, r_I)**: Control the growth rate of each cell type.
+# - **Interaction Parameters (alpha, beta, theta)**: Define how different biomarkers influence each other.
+# - **Noise Level**: Adjusts the variability in the simulation data.
+# - **Initial Conditions**: Mean values for the initial quantities of each cell type.
+# """)
+
+st.sidebar.markdown("""
+### Enter Initial Biomarker Values
+
+Enter the **mean values** for hemoglobin, BMI, albumin, and iron,  
+as well as **mean** and **standard deviation** for CRP.  
+
+**Note:** Standard deviations for hemoglobin, BMI, albumin, and iron are **predefined**.
+""")
+
+with st.sidebar.expander("🔍 What Distributions Are Used?"):
+    st.markdown("""
+    - The initial conditions for hemoglobin, BMI, albumin, and iron follow **normal distributions**.  
+    - CRP follows a **log-normal distribution**, meaning the **mean** and **standard deviation** you enter  
+      are in the **original (linear) scale** and will be transformed into log-space parameters  
+      before generating CRP samples.
+    """)
+
+# Collapsible explanation section
+with st.sidebar.expander("🔍 What Does This Mean?"):
+    st.markdown("""
+    - The distributions specified here are used **to generate the initial conditions** of the biomarkers.  
+    - The **mean_C** and **std_C** you enter for CRP are in the **original (linear) scale**.  
+    - They will be **transformed into log-space parameters** before generating CRP samples.
+    """)
+
+
+
+# Initial conditions
+# Intermediate Group inputs
+st.sidebar.markdown("#### Mean of Biomarker")
+mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=10.6)
+mean_W_simu_inter = st.sidebar.number_input('BMI', value=14.0)
+mean_A_simu_inter = st.sidebar.number_input('Albumin', value=3.8)
+mean_I_simu_inter = st.sidebar.number_input('Iron', value=32.5)
+mean_C_simu_inter = st.sidebar.number_input('CRP', value=19.0)
+
+st.sidebar.markdown("#### Standard Deviation of CRP")
+std_C_inter = st.sidebar.number_input('CRP', value=29.0)
+
+
+# Sidebar option to visualize distributions
+if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
+    st.markdown("## Initial Conditions Distributions")
+    st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
+
+    # Visualize intermediate group distribution
+    plot_initial_conditions_distributions(
+        mean_C=mean_C_simu_inter,
+        std_C=std_C_inter,
+        mean_H=mean_H_simu_inter,
+        mean_W=mean_W_simu_inter,
+        mean_A=mean_A_simu_inter,
+        mean_I=mean_I_simu_inter
+    )
+    
+
+
+
+
+
 
 # Function to generate different time points per patient
 def generate_patient_time_points(num_patients, max_time=15):
@@ -456,82 +528,6 @@ percentiles = compute_percentiles(final_data, time_grid)
 # Display the plots immediately
 st.markdown("## Biomarker Simulations")
 plot_biomarker_trajectories(final_data, percentiles, time_grid)
-
-
-
-# --------------------------------------------------------------------------------------------------------------------------------------------------------
-
-# Sidebar parameters
-st.sidebar.title("Adjust Parameters")
-
-# st.sidebar.markdown("### Simulation Parameters")
-
-
-# Explanation for parameters
-# st.sidebar.info("""
-# # **Parameters:**
-
-# - **Growth Rates (r_C, r_H, r_W, r_A, r_I)**: Control the growth rate of each cell type.
-# - **Interaction Parameters (alpha, beta, theta)**: Define how different biomarkers influence each other.
-# - **Noise Level**: Adjusts the variability in the simulation data.
-# - **Initial Conditions**: Mean values for the initial quantities of each cell type.
-# """)
-
-st.sidebar.markdown("""
-### Enter Initial Biomarker Values
-
-Enter the **mean values** for hemoglobin, BMI, albumin, and iron,  
-as well as **mean** and **standard deviation** for CRP.  
-
-**Note:** Standard deviations for hemoglobin, BMI, albumin, and iron are **predefined**.
-""")
-
-with st.sidebar.expander("🔍 What Distributions Are Used?"):
-    st.markdown("""
-    - The initial conditions for hemoglobin, BMI, albumin, and iron follow **normal distributions**.  
-    - CRP follows a **log-normal distribution**, meaning the **mean** and **standard deviation** you enter  
-      are in the **original (linear) scale** and will be transformed into log-space parameters  
-      before generating CRP samples.
-    """)
-
-# Collapsible explanation section
-with st.sidebar.expander("🔍 What Does This Mean?"):
-    st.markdown("""
-    - The distributions specified here are used **to generate the initial conditions** of the biomarkers.  
-    - The **mean_C** and **std_C** you enter for CRP are in the **original (linear) scale**.  
-    - They will be **transformed into log-space parameters** before generating CRP samples.
-    """)
-
-
-
-# Initial conditions
-# Intermediate Group inputs
-st.sidebar.markdown("#### Mean of Biomarker")
-mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=10.6)
-mean_W_simu_inter = st.sidebar.number_input('BMI', value=14.0)
-mean_A_simu_inter = st.sidebar.number_input('Albumin', value=3.8)
-mean_I_simu_inter = st.sidebar.number_input('Iron', value=32.5)
-mean_C_simu_inter = st.sidebar.number_input('CRP', value=19.0)
-
-st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_inter = st.sidebar.number_input('CRP', value=29.0)
-
-
-# Sidebar option to visualize distributions
-if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
-    st.markdown("## Initial Conditions Distributions")
-    st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
-
-    # Visualize intermediate group distribution
-    plot_initial_conditions_distributions(
-        mean_C=mean_C_simu_inter,
-        std_C=std_C_inter,
-        mean_H=mean_H_simu_inter,
-        mean_W=mean_W_simu_inter,
-        mean_A=mean_A_simu_inter,
-        mean_I=mean_I_simu_inter
-    )
-    
 
 
 
