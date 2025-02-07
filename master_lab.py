@@ -299,19 +299,23 @@ with st.expander("📊 **Mathematical Explanation**"):
 with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
     $$ \frac{dX}{dt} = \text{Growth} + \text{Influence from Others} $$
-    where $$ \( X \in \{C, H, W, A, I\} \) $$.
+    where $ X \in \{C, H, W, A, I\} $.
 
     - The equation $ \frac{dX}{dt} $ describes **how a biomarker changes over time**.  
-    - Growth follows a **logistic growth model**:  $$ r_X X \left(1 - \frac{X}{K_X} \right) $$ 
-      - The term $ \( r_X X \) $ represents **natural growth**.
-      - The factor $ \( \left(1 - \frac{X}{K_X} \right) \) $ ensures that growth slows  
-      as $ \( X \) $ approaches its **carrying capacity** $ \( K_X \) $ which is predefined.  
+    - Growth follows a **logistic growth model**:  
+      $$ r_X X \left(1 - \frac{X}{K_X} \right) $$ 
+      - The term $ r_X X $ represents **natural growth**.
+      - The factor $ \left(1 - \frac{X}{K_X} \right) $ ensures that growth slows  
+        as $ X $ approaches its **carrying capacity** $ K_X $, which is predefined.  
+
     - Some biomarkers are **linked**:  
-      e.g. $$ \frac{dH}{dt} = r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \frac{I}{K_I} $$
-      - When $ \alpha_{HI} > 0 $ Hemoglobin $ H $ grows when iron $ I $ is high.  
-      $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \frac{W}{K_W} $$
-      - Albumin $ A $ grows when weight $ W $ is high.  
+      e.g.  
+      $$ \frac{dH}{dt} = r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \frac{I}{K_I} $$  
+      - When $ \alpha_{HI} > 0 $, an increase in iron ($ I $) promotes the growth of hemoglobin ($ H $).  
+      $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \frac{W}{K_W} $$  
+      - Similarly, when $ \alpha_{AW} > 0 $, a higher weight ($ W $) supports the growth of albumin ($ A $).  
     """)
+
 
 
 
