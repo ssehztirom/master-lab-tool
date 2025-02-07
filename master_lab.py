@@ -487,9 +487,56 @@ def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
     st.pyplot(fig)
 
 
-import streamlit as st
-import numpy as np
-import matplotlib.pyplot as plt
+# Automatically generate and display the plots when the app loads
+num_patients = 20
+max_time = 15
+
+# Generate different time points per patient
+time_points_simu = generate_patient_time_points(num_patients, max_time)
+
+# Generate initial conditions for 20 patients
+simu_init = generate_initial_conditions(
+    num_patients, mean_C_simu_inter, std_C_inter,
+    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter
+)
+
+# Define ODE parameters
+maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
+params = [r_C1, r_H1, r_W1, r_A1, r_I1, alpha_HI1, alpha_AW1]
+noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
+
+# Simulate patient data
+final_data = concatenate_data_diff_noise(
+        simu_init, time_points_simu,
+        maxes, params, noise_std, noise=add_noise, type='hypo'
+    )
+# simulate_patient_data(num_patients, time_points_simu, simu_init, maxes, params, noise_std, add_noise)
+
+# Create a common time grid (0 to 15 years)
+time_grid = np.linspace(0, max_time, 50)
+
+# Compute percentiles across all patients
+percentiles = compute_percentiles(final_data, time_grid)
+
+# Display the plots immediately
+# st.markdown("## Biomarker Simulations")
+# plot_biomarker_trajectories(final_data, percentiles, time_grid)
+
+
+
+
+# Store baseline data in session state
+if "baseline_data" not in st.session_state:
+    st.session_state["baseline_data"] = final_data
+
+# Compute percentiles and store them
+if "percentiles" not in st.session_state:
+    st.session_state["percentiles"] = compute_percentiles(final_data, time_grid)
+
+# Store time grid for reference
+if "time_grid" not in st.session_state:
+    st.session_state["time_grid"] = time_grid
+
 
 def plot_fixed_biomarker_trajectories():
     """Creates fixed plots for biomarkers that update dynamically after simulation."""
@@ -532,40 +579,6 @@ def plot_fixed_biomarker_trajectories():
     st.pyplot(fig)
 
 
-# Automatically generate and display the plots when the app loads
-num_patients = 20
-max_time = 15
-
-# Generate different time points per patient
-time_points_simu = generate_patient_time_points(num_patients, max_time)
-
-# Generate initial conditions for 20 patients
-simu_init = generate_initial_conditions(
-    num_patients, mean_C_simu_inter, std_C_inter,
-    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter
-)
-
-# Define ODE parameters
-maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
-params = [r_C1, r_H1, r_W1, r_A1, r_I1, alpha_HI1, alpha_AW1]
-noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
-
-# Simulate patient data
-final_data = concatenate_data_diff_noise(
-        simu_init, time_points_simu,
-        maxes, params, noise_std, noise=add_noise, type='hypo'
-    )
-# simulate_patient_data(num_patients, time_points_simu, simu_init, maxes, params, noise_std, add_noise)
-
-# Create a common time grid (0 to 15 years)
-time_grid = np.linspace(0, max_time, 50)
-
-# Compute percentiles across all patients
-percentiles = compute_percentiles(final_data, time_grid)
-
-# Display the plots immediately
-# st.markdown("## Biomarker Simulations")
-# plot_biomarker_trajectories(final_data, percentiles, time_grid)
 
 
 
