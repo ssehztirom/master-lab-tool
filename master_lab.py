@@ -430,12 +430,16 @@ noise_level = st.sidebar.number_input('Noise Level', min_value=0.0, max_value=1.
 
 
 # Function to generate different time points per patient
+# def generate_patient_time_points(num_patients, max_time=15):
+    # time_points = []
+    # for _ in range(num_patients):
+        # num_time_steps = np.random.randint(6, 20)  # Random number of time points per patient
+        # time_points.append(sorted(np.random.uniform(0, max_time, num_time_steps)))
+    # return time_points
+
 def generate_patient_time_points(num_patients, max_time=15):
-    time_points = []
-    for _ in range(num_patients):
-        num_time_steps = np.random.randint(6, 20)  # Random number of time points per patient
-        time_points.append(sorted(np.random.uniform(0, max_time, num_time_steps)))
-    return time_points
+    # Vectorized-ish version using list comprehension
+    return [sorted(np.random.uniform(0, max_time, np.random.randint(6, 20))) for _ in range(num_patients)]
 
 
 # Compute percentiles across all patients at each time step
@@ -630,7 +634,7 @@ def plot_fixed_biomarker_trajectories():
 def generate_random_time_points(num_patients, max_time=15):
     time_points = []
     for _ in range(num_patients):
-        num_time_steps = np.random.randint(6, 14)  # Random number of time points between 6 and 16
+        num_time_steps = np.random.randint(6, 12)  # Random number of time points between 6 and 16
 
         # Select unique random time points from integers between 1 and 14
         random_times = sorted(np.random.choice(range(1, max_time), num_time_steps - 2, replace=False))
