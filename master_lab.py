@@ -422,6 +422,34 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
 
 
 
+
+
+
+# Parameters to adjust
+st.sidebar.markdown("## Growth/Deacay Rate of Different Biomarkers")
+st.sidebar.markdown("A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.")
+r_C1 = st.sidebar.slider('CRP', min_value=-1.0, max_value=1.0, value=0.1, step=0.01, format="%.2f")
+r_H1 = st.sidebar.slider('Haemoglobin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
+r_W1 = st.sidebar.slider('BMI', min_value=-1.0, max_value=1.0, value=-0.05, step=0.01, format="%.2f")
+r_A1 = st.sidebar.slider('Albumin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
+r_I1 = st.sidebar.slider('Iron', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
+
+st.sidebar.markdown("## How the First Biomarker Influences the Second One")
+alpha_HI1 = st.sidebar.slider('Iron - Hemoglobin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
+alpha_AW1 = st.sidebar.slider('BMI - Albumin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
+
+
+st.sidebar.markdown("## Variability")
+st.sidebar.markdown("If you choose not to add variability, you can leave the variability level alone.")
+add_noise = st.sidebar.checkbox('Add Variability', True)
+noise_level = st.sidebar.number_input('Variability Level', min_value=0.0, max_value=2.0, value=0.5, step=0.1, format="%.1f")
+
+
+
+
+
+
+
 # Function to generate different time points per patient
 def generate_patient_time_points(num_patients, max_time=15):
     time_points = []
@@ -531,24 +559,15 @@ plot_biomarker_trajectories(final_data, percentiles, time_grid)
 
 
 
-# Parameters to adjust
-st.sidebar.markdown("## Growth/Deacay Rate of Different Biomarkers")
-st.sidebar.markdown("A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.")
-r_C1 = st.sidebar.slider('CRP', min_value=-1.0, max_value=1.0, value=0.1, step=0.01, format="%.2f")
-r_H1 = st.sidebar.slider('Haemoglobin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
-r_W1 = st.sidebar.slider('BMI', min_value=-1.0, max_value=1.0, value=-0.05, step=0.01, format="%.2f")
-r_A1 = st.sidebar.slider('Albumin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
-r_I1 = st.sidebar.slider('Iron', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
-
-st.sidebar.markdown("## How the First Biomarker Influences the Second One")
-alpha_HI1 = st.sidebar.slider('Iron - Hemoglobin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
-alpha_AW1 = st.sidebar.slider('BMI - Albumin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
 
 
-st.sidebar.markdown("## Variability")
-st.sidebar.markdown("If you choose not to add variability, you can leave the variability level alone.")
-add_noise = st.sidebar.checkbox('Add Variability', True)
-noise_level = st.sidebar.number_input('Variability Level', min_value=0.0, max_value=2.0, value=0.5, step=0.1, format="%.1f")
+
+
+
+
+
+
+
 
 
 # Run simulation button
