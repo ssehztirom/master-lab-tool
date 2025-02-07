@@ -403,14 +403,17 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
 
 # Parameters to adjust
 st.sidebar.markdown("## Growth/Deacay Rate of Different Biomarkers")
-st.sidebar.markdown("A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.")
+with st.sidebar.expander("🔍 What Does This Mean?"):
+    st.markdown("""
+   A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.
+    """)
 r_C1 = st.sidebar.slider(r"$r_C$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_H1 = st.sidebar.slider(r"$r_H$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_W1 = st.sidebar.slider(r"$r_B$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_A1 = st.sidebar.slider(r"$r_A$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_I1 = st.sidebar.slider(r"$r_I$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 
-st.sidebar.markdown("## How the First Biomarker Influences the Second One")
+st.sidebar.markdown("## Correlation Parameters")
 alpha_HI1 = st.sidebar.slider(r"$\alpha_{HI}$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 alpha_AW1 = st.sidebar.slider(r"$\alpha_{AB}$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 
