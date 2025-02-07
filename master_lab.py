@@ -11,6 +11,7 @@ params1 = []
 if 'parameters_saved' not in st.session_state:
     st.session_state['parameters_saved'] = False
 
+'''
 def save_parameters(name, comment, parameters, add_variability, variability_level, birth_means_var):
     try:
         # Use credentials from Streamlit secrets
@@ -30,7 +31,38 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
         sheet.append_row(data)
     except gspread.exceptions.APIError as e:
         st.error(f"API Error: {e}")
+'''
 
+def find_empty_row(sheet):
+    """Find the first empty row in Column A."""
+    col_A = sheet.col_values(1)  # Get all values in column A
+    return len(col_A) + 1  # Next available row index
+
+def save_parameters(name, comment, parameters, add_variability, variability_level, birth_means_var):
+    try:
+        # Use credentials from Streamlit secrets
+        credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+            st.secrets["google_service_account"],
+            scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+        )
+        client = gspread.authorize(credentials)
+
+        # Access the Google Sheet
+        sheet = client.open("ODE-parameters").sheet1
+        
+        # Find the first empty row in Column A
+        next_row = find_empty_row(sheet)
+
+        # Prepare the data to append
+        data = [name, comment] + parameters + [add_variability, variability_level] + birth_means_var
+        
+        # Insert data into the first empty row (starting from column A)
+        sheet.insert_row(data, next_row)
+
+        st.success(f"Data successfully saved in row {next_row}.")
+
+    except gspread.exceptions.APIError as e:
+        st.error(f"API Error: {e}")
 
 
 
