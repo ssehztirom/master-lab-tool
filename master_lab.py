@@ -367,14 +367,14 @@ with st.sidebar.expander("🔍 What Does This Mean?"):
 # Initial conditions
 # Intermediate Group inputs
 st.sidebar.markdown("#### Mean of Biomarker")
-mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=0.0)
-mean_W_simu_inter = st.sidebar.number_input('BMI', value=0.0)
-mean_A_simu_inter = st.sidebar.number_input('Albumin', value=0.0)
-mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0)
-mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0)
+mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=0.0, step=0.1, format="%.1f")
+mean_W_simu_inter = st.sidebar.number_input('BMI', value=0.0, step=0.1, format="%.1f")
+mean_A_simu_inter = st.sidebar.number_input('Albumin', value=0.0, step=0.1, format="%.1f")
+mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0, step=0.1, format="%.1f")
+mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0, step=0.1, format="%.1f")
 
 st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_inter = st.sidebar.number_input('std CRP', value=0.0)
+std_C_inter = st.sidebar.number_input('std CRP', value=0.0, step=0.1, format="%.1f")
 
 
 # Sidebar option to visualize distributions
