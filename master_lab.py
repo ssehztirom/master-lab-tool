@@ -579,7 +579,7 @@ def plot_fixed_biomarker_trajectories():
                 # ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
 
             for patient in st.session_state["simulation_results"]:
-                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=3, alpha=1, label="Patient Trajectory", marker='o', markersize=3)
+                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8, label="Patient Trajectory", marker='o', markersize=5)
 
                 # ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=3, alpha=1, label="Patient Trajectory")
 
