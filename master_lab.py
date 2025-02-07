@@ -144,7 +144,7 @@ def generate_initial_conditions(num_patient, mean_C, std_C, mean_H, mean_W, mean
 
 def plot_simulation(final_data):
     # Define colors for each biomarker
-    colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'plum']
+    colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'violet']
     # y_limits = [(0, 200), (0, 20), (5, 30), (0.0, 8.0), (0, 150)]
     biomarkers = ['CRP', 'Haemoglobin', 'BMI', 'Albumin', 'Iron']
 
@@ -537,7 +537,7 @@ if "time_grid" not in st.session_state:
 def plot_fixed_biomarker_trajectories():
     """Creates fixed plots for biomarkers that update dynamically after simulation."""
     biomarkers = ['CRP', 'Haemoglobin', 'BMI', 'Albumin', 'Iron']
-    colors = ['royalblue', 'mediumseagreen', 'salmon', 'orange', 'plum']
+    colors = ['royalblue', 'mediumseagreen', 'tomato', 'orange', 'violet']
     dark_colors = ['navy', 'darkgreen', 'firebrick', 'darkorange', 'purple']  # Darker shades for simulated patients
 
     fig, axes = plt.subplots(5, 1, figsize=(8, 25), sharex=True)
