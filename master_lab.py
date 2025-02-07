@@ -556,18 +556,28 @@ def plot_fixed_biomarker_trajectories():
         # Scatter plot of preloaded patient data (lighter colors)
         if "baseline_data" in st.session_state:
             for patient in st.session_state["baseline_data"]:
-                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.3, s=15)
+                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.3, s=15, label="Baseline Patients")
+
+        # Plot percentiles
+        if "percentiles" in st.session_state:
+            percentiles = st.session_state["percentiles"]
+            time_grid = st.session_state["time_grid"]
+
+            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="black", label="5th percentile")
+            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", label="50th percentile (Median)")
+            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
 
         # Overlay user-generated patient trajectories in darker colors
         if "simulation_results" in st.session_state:
             patient_data = st.session_state["simulation_results"]
             for patient in patient_data:
-                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
+                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8, label="Simulated Patients")
 
         ax.legend()
 
     plt.tight_layout()
     st.pyplot(fig)
+
 
 
 
