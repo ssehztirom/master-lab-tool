@@ -459,26 +459,6 @@ def generate_patient_time_points(num_patients, max_time=15):
         time_points.append(sorted(np.random.uniform(0, max_time, num_time_steps)))
     return time_points
 
-# Function to simulate ODE solutions for multiple patients
-def simulate_patient_data(num_patients, time_points, init_conditions, maxes, params, noise_std, add_noise):
-    all_patient_data = []
-
-    for i in range(num_patients):
-        t = np.array(time_points[i])
-        y0 = init_conditions[:, i]
-        
-        # Solve ODE
-        patient_data = euler_method(ode_system, y0, t, *maxes, *params)
-        
-        # Apply noise
-        if add_noise:
-            patient_data = process_data(patient_data, len(t), add_noise, noise_std)
-
-        # Store each patient’s data
-        patient_data = np.hstack([patient_data, t.reshape(-1, 1)])  # Add time column
-        all_patient_data.append(patient_data)
-
-    return all_patient_data
 
 # Compute percentiles across all patients at each time step
 def compute_percentiles(all_patient_data, time_grid, num_biomarkers=5):
