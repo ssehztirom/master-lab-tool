@@ -131,6 +131,14 @@ def resample_positive(mean, std, size):
         values[negative_indices] = np.random.normal(loc=mean, scale=std, size=negative_indices.sum())
     return values
 
+
+def resample_positive(mean, std, size):
+    values = np.random.normal(loc=mean, scale=std, size=size)
+    while (values < 0).any():
+        negative_indices = values < 0
+        values[negative_indices] = np.random.normal(loc=mean, scale=std, size=negative_indices.sum())
+    return values
+
 def generate_initial_conditions(num_patient, mean_C, std_C, mean_H, mean_W, mean_A, mean_I):
 
     sigma_sq = math.log(1 + (std_C / mean_C)**2)
@@ -496,7 +504,7 @@ def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
 
 
 # Automatically generate and display the plots when the app loads
-num_patients = 20
+num_patients = 30
 max_time = 15
 
 # Generate different time points per patient
