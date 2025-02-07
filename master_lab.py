@@ -164,12 +164,18 @@ def plot_simulation(final_data):
         fig.tight_layout(rect=[0, 0.02, 1, 0.98])
         st.pyplot(fig)
 
+def generate_log_normal_samples(mean_C, std_C, num_samples=1000):
+    sigma_sq = np.log(1 + (std_C / mean_C) ** 2)  # Log variance
+    mu = np.log(mean_C) - (sigma_sq / 2)  # Log mean
+    sigma = np.sqrt(sigma_sq)  # Log std dev
+    return lognorm.rvs(s=sigma, scale=np.exp(mu), size=num_samples)
+
 
 def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A, mean_I):
     num_samples = 1000  # Number of samples to plot the distributions
 
     # Generate samples for each biomarker
-    C_samples = lognorm.rvs(s=std_C / mean_C, scale=mean_C, size=num_samples)
+    C_samples = generate_log_normal_samples(mean_C, std_C, num_samples)
     H_samples = np.random.normal(mean_H, 2.5, num_samples)
     W_samples = np.random.normal(mean_W, 2.3, num_samples)
     A_samples = np.random.normal(mean_A, 0.9, num_samples)
@@ -177,7 +183,7 @@ def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A,
 
     # Create subplots with two rows: first row for CRP and Hemoglobin, second row for BMI, Albumin, and Iron
     fig, axes = plt.subplots(2, 3, figsize=(20, 12))
-    fig.suptitle(f"Initial Conditions Distributions)", fontsize=16, weight='bold')
+    fig.suptitle(f"Initial Conditions Distributions", fontsize=16, weight='bold')
 
     # Plot each biomarker with appropriate spacing and axis limits
     sns.histplot(C_samples, kde=True, ax=axes[0, 0], color="royalblue", edgecolor="black", alpha=0.7)
