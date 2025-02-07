@@ -654,8 +654,8 @@ user_comment = st.sidebar.text_area("Comments (Why did you choose these paramete
 if st.sidebar.button('Save Parameters'):
     if not user_name:
         st.warning("Please enter your name before saving.")
-    elif 'params1' not in st.session_state:
-        st.warning("Please run the simulation first to generate parameters.")
+    # elif 'params1' not in st.session_state:
+        # st.warning("Please run the simulation first to generate parameters.")
     else:
         save_parameters(
             user_name, 
