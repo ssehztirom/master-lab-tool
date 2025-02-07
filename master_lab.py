@@ -486,6 +486,52 @@ def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust spacing
     st.pyplot(fig)
 
+
+import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plot_fixed_biomarker_trajectories():
+    """Creates fixed plots for biomarkers that update dynamically after simulation."""
+    biomarkers = ['CRP', 'Haemoglobin', 'BMI', 'Albumin', 'Iron']
+    colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'plum']
+    dark_colors = ['navy', 'darkgreen', 'firebrick', 'goldenrod', 'purple']  # Darker shades for simulated patients
+
+    fig, axes = plt.subplots(5, 1, figsize=(8, 25), sharex=True)
+    fig.suptitle("ODE Simulation of Biomarkers", fontsize=16, weight='bold')
+
+    for i, ax in enumerate(axes):
+        ax.set_title(biomarkers[i])
+        ax.set_ylabel("Value")
+        ax.set_xlabel("Age (years)")
+        ax.grid(True)
+
+        # Scatter plot of preloaded patient data (lighter colors)
+        if "baseline_data" in st.session_state:
+            for patient in st.session_state["baseline_data"]:
+                ax.scatter(patient[:, -1], patient[:, i], color=colors[i], alpha=0.3, s=15)
+
+        # Plot percentiles
+        if "percentiles" in st.session_state:
+            percentiles = st.session_state["percentiles"]
+            time_grid = st.session_state["time_grid"]
+
+            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="black", label="5th percentile")
+            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", label="50th percentile (Median)")
+            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
+
+        # Overlay user-generated patient trajectories in darker colors
+        if "simulation_results" in st.session_state:
+            patient_data = st.session_state["simulation_results"]
+            for patient in patient_data:
+                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
+
+        ax.legend()
+
+    plt.tight_layout()
+    st.pyplot(fig)
+
+
 # Automatically generate and display the plots when the app loads
 num_patients = 20
 max_time = 15
@@ -518,82 +564,53 @@ time_grid = np.linspace(0, max_time, 50)
 percentiles = compute_percentiles(final_data, time_grid)
 
 # Display the plots immediately
+# st.markdown("## Biomarker Simulations")
+# plot_biomarker_trajectories(final_data, percentiles, time_grid)
+
 st.markdown("## Biomarker Simulations")
-plot_biomarker_trajectories(final_data, percentiles, time_grid)
+plot_fixed_biomarker_trajectories()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-# Run simulation button
 if st.sidebar.button('Run Simulation'):
     # Convert parameters to the appropriate format
-    params1 = [r_C1, r_H1, r_W1, r_A1, r_I1,
-               alpha_HI1, alpha_AW1]
-    st.session_state['params1'] = params1
-
-    # Adjust noise level
-    noise_C_std = noise_level * 40
-    noise_H_std = noise_level * 2.5  # std_H
-    noise_W_std = noise_level * 2.3  # std_W
-    noise_A_std = noise_level * 0.9  # std_A
-    noise_I_std = noise_level * 21   # std_I
-    noise_std = [noise_C_std, noise_H_std, noise_W_std, noise_A_std, noise_I_std]
-
-    # Generate initial conditions based on the input means
-    num_patient = 3
-    simu_init_inter = generate_initial_conditions(
-        num_patient,
-        mean_C_simu_inter,
-        std_C_inter,
-        mean_H_simu_inter,
-        mean_W_simu_inter,
-        mean_A_simu_inter,
-        mean_I_simu_inter
+    params1 = [r_C1, r_H1, r_W1, r_A1, r_I1, alpha_HI1, alpha_AW1]
+    
+    # Generate initial conditions
+    num_patients = 3  # Only 3 patients for simulation
+    simu_init = generate_initial_conditions(
+        num_patients, mean_C_simu_inter, std_C_inter,
+        mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter
     )
-    
-    # Time points
-    num_simu_patient = num_patient
-    time_points_simu = [[i for i in range(16)] for _ in range(num_simu_patient)]
-    
-    # Maxes
-    K_C = 200.0
-    K_H = 15.0
-    K_W = 25.0
-    K_A = 5.0
-    K_I = 160.0
-    maxes = K_C, K_H, K_W, K_A, K_I
 
-    # Run the simulation
+    # Generate patient time points
+    max_time = 15
+    time_points_simu = [[i for i in range(16)] for _ in range(num_patients)]  # Fixed time steps
+
+    # Define ODE parameters
+    maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
+    noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
+
+    # Simulate patient data
     final_data = concatenate_data_diff_noise(
-        simu_init_inter, time_points_simu,
-        maxes, params1, noise_std, noise=add_noise, type='hypo'
+        simu_init, time_points_simu, maxes, params1, noise_std, noise=add_noise, type='hypo'
     )
 
-    # Check for zero values in final_data
-    contains_zero = any((patient_data[:, :-1] <= 0).any() for patient_data in final_data)
-    if contains_zero:
-        st.warning("The generated data contains zero or negative values. Please review your parameters or initial conditions.")
-    else:
-        st.success("No zero or negative values generated")
+    # Store in session state to update the plot
+    st.session_state["simulation_results"] = final_data
+
+    # Refresh the fixed plots with new data
+    st.experimental_rerun()
 
 
-    
-    # Visualize the results
-    st.markdown("## Simulation Results")
-    plot_simulation(final_data)
-else:
-    st.markdown("## Awaiting Simulation")
-    st.markdown("Adjust parameters and click **Run Simulation** to see results.")
+
+
+
+
+
+
+
+
+
 
 
 # Collect information from the UI elements and session_state
