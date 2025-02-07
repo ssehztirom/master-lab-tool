@@ -466,7 +466,7 @@ def plot_biomarker_trajectories(all_patient_data, percentiles, time_grid):
     colors = ['royalblue', 'mediumseagreen', 'salmon', 'gold', 'plum']
 
     fig, axes = plt.subplots(5, 1, figsize=(8, 25), sharex=True)
-    fig.suptitle("ODE Simulation of Biomarkers with Percentiles", fontsize=16, weight='bold')
+    # fig.suptitle("ODE Simulation of Biomarkers with Percentiles", fontsize=16, weight='bold')
 
     for i, ax in enumerate(axes):
         # Scatter plot of all patient data
@@ -545,7 +545,7 @@ def plot_fixed_biomarker_trajectories():
     dark_colors = ['navy', 'darkgreen', 'firebrick', 'goldenrod', 'purple']  # Darker shades for simulated patients
 
     fig, axes = plt.subplots(5, 1, figsize=(8, 25), sharex=True)
-    fig.suptitle("ODE Simulation of Biomarkers", fontsize=16, weight='bold')
+    # fig.suptitle("ODE Simulation of Biomarkers", fontsize=16, weight='bold')
 
     for i, ax in enumerate(axes):
         ax.set_title(biomarkers[i])
@@ -567,9 +567,9 @@ def plot_fixed_biomarker_trajectories():
             # ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", label="50th percentile (Median)")
             # ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
 
-            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="gray", alpha=0.5, linewidth=1, label="5th percentile")
-            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", alpha=0.5, linewidth=1, label="50th percentile (Median)")
-            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="gray", alpha=0.5, linewidth=1, label="95th percentile")
+            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="gray", alpha=0.5, linewidth=1.5, label="5th percentile")
+            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", alpha=0.5, linewidth=1.5, label="50th percentile (Median)")
+            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="gray", alpha=0.5, linewidth=1.5, label="95th percentile")
 
 
         # Overlay user-generated patient trajectories in darker colors
