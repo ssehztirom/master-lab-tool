@@ -597,6 +597,7 @@ def plot_fixed_biomarker_trajectories():
 if st.sidebar.button('Run Simulation'):
     # Convert parameters to the appropriate format
     params1 = [r_C1, r_H1, r_W1, r_A1, r_I1, alpha_HI1, alpha_AW1]
+    st.session_state['params1'] = params1
     
     # Generate initial conditions
     num_patients = 3  # Only 3 patients for simulation
@@ -654,8 +655,8 @@ user_comment = st.sidebar.text_area("Comments (Why did you choose these paramete
 if st.sidebar.button('Save Parameters'):
     if not user_name:
         st.warning("Please enter your name before saving.")
-    # elif 'params1' not in st.session_state:
-        # st.warning("Please run the simulation first to generate parameters.")
+    elif 'params1' not in st.session_state:
+        st.warning("Please run the simulation first to generate parameters.")
     else:
         save_parameters(
             user_name, 
