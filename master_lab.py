@@ -634,7 +634,7 @@ if st.sidebar.button('Run Simulation'):
     # Generate patient time points
     max_time = 15
     # time_points_simu = [[i for i in range(16)] for _ in range(num_patients)]  # Fixed time steps
-    time_points_simu = generate_patient_time_points(num_patients, max_time)
+    time_points_simu = generate_random_time_points(num_patients, max_time)
 
     
     # Define ODE parameters
