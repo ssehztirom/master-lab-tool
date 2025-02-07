@@ -110,6 +110,7 @@ def process_data(data, size, noise, noise_std):
         data = apply_noise(data.copy(), size, noise_std)
     return data
 
+
 def concatenate_data_diff_noise(init, time_points, maxes, cali_params, noise_std, noise, type='hypo', inter_num=None):
     if type == 'real':
         if inter_num is None:
@@ -471,7 +472,7 @@ def simulate_patient_data(num_patients, time_points, init_conditions, maxes, par
         
         # Apply noise
         if add_noise:
-            patient_data = process_data(patient_data, len(t), noise_std, True)
+            patient_data = process_data(patient_data, len(t), True, noise_std)
 
         # Store each patient’s data
         patient_data = np.hstack([patient_data, t.reshape(-1, 1)])  # Add time column
