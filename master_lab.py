@@ -551,7 +551,7 @@ def plot_fixed_biomarker_trajectories():
         ax.set_title(biomarkers[i])
         ax.set_ylabel("Value")
         ax.set_xlabel("Age (years)")
-        ax.grid(False)
+        ax.grid(True)
 
         # Scatter plot of preloaded patient data (lighter colors)
         if "baseline_data" in st.session_state:
