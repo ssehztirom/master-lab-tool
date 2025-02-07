@@ -37,20 +37,10 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
 
 ### Function Definitions
 
-def ode_system1(y, t, K_C, K_H, K_W, K_A, K_I, r_C, r_H, r_W, r_A, r_I,
+def ode_system(y, t, K_C, K_H, K_W, K_A, K_I, r_C, r_H, r_W, r_A, r_I,
                 alpha_HI, alpha_AW):
     C, H, W, A, I = y
     dCdt = r_C * C * (1 - C / K_C)
-    dHdt = r_H * H * (1 - H / K_H) + alpha_HI * (I / K_I)
-    dWdt = r_W * W * (1 - W / K_W)
-    dAdt = r_A * A * (1 - A / K_A) + alpha_AW * (W / K_W)
-    dIdt = r_I * I * (1 - I / K_I) 
-    return np.array([dCdt, dHdt, dWdt, dAdt, dIdt])
-
-def ode_system2(y, t, K_C, K_H, K_W, K_A, K_I, r_C, r_H, r_W, r_A, r_I,
-                alpha_HI, alpha_AW, delta):
-    C, H, W, A, I = y
-    dCdt = (r_C + delta) * C * (1 - C / K_C) 
     dHdt = r_H * H * (1 - H / K_H) + alpha_HI * (I / K_I)
     dWdt = r_W * W * (1 - W / K_W)
     dAdt = r_A * A * (1 - A / K_A) + alpha_AW * (W / K_W)
@@ -88,7 +78,7 @@ def process_data(data, size, noise, noise_std):
         data = apply_noise(data.copy(), size, noise_std)
     return data
 
-def concatenate_data_diff_noise(init_inter, init_se, time_points, maxes, cali_params, noise_std, noise, type='hypo', inter_num=None):
+def concatenate_data_diff_noise(init, time_points, maxes, cali_params, noise_std, noise, type='hypo', inter_num=None):
     if type == 'real':
         if inter_num is None:
             raise ValueError("inter_num must be provided when type is 'real'")
@@ -101,12 +91,12 @@ def concatenate_data_diff_noise(init_inter, init_se, time_points, maxes, cali_pa
 
     final_data = []
     K_C, K_H, K_W, K_A, K_I = maxes
-    r_C, r_H, r_W, r_A, r_I, alpha_HI, alpha_AW, delta = cali_params
+    r_C, r_H, r_W, r_A, r_I, alpha_HI, alpha_AW = cali_params
 
-    for idx, t in enumerate(inter_time_points):
+    for idx, t in enumerate(time_points):
         t = np.array(t)
-        y0 = init_inter[:, idx]
-        inter = euler_method(ode_system1, y0, t, K_C, K_H, K_W, K_A, K_I,
+        y0 = init[:, idx]
+        inter = euler_method(ode_system, y0, t, K_C, K_H, K_W, K_A, K_I,
                              r_C, r_H, r_W, r_A, r_I,
                              alpha_HI, alpha_AW)
         size = inter.shape[0]
@@ -114,18 +104,6 @@ def concatenate_data_diff_noise(init_inter, init_se, time_points, maxes, cali_pa
         t = t.reshape(-1, 1)
         inter = np.hstack([inter, t])
         final_data.append(inter)
-
-    for idx, t in enumerate(se_time_points):
-        t = np.array(t)
-        y0 = init_se[:, idx]
-        se = euler_method(ode_system2, y0, t, K_C, K_H, K_W, K_A, K_I,
-                          r_C, r_H, r_W, r_A, r_I,
-                          alpha_HI, alpha_AW, delta)
-        size = se.shape[0]
-        se = process_data(se, size, noise, noise_std)
-        t = t.reshape(-1, 1)
-        se = np.hstack([se, t])
-        final_data.append(se)
 
     return final_data
 
@@ -137,11 +115,6 @@ def resample_positive(mean, std, size):
     return values
 
 def generate_initial_conditions(num_patient, mean_C, std_C, mean_H, mean_W, mean_A, mean_I):
-    # Generate initial conditions based on the means provided
-    # sigma = 1.3  # Standard deviation for C cells
-    # mu_simu_prime = np.log(mu_simu**2 / np.sqrt(mu_simu**2 + sigma**2))
-    # sigma_simu_prime = np.sqrt(np.log(1 + (sigma**2) / mu_simu**2))
-    # C_simu = np.exp(np.random.normal(loc=mu_simu_prime, scale=sigma_simu_prime, size=(num_patient,)))
 
     sigma_sq = math.log(1 + (std_C / mean_C)**2)
     mu = math.log(mean_C) - (sigma_sq / 2)
@@ -187,11 +160,7 @@ def plot_simulation(final_data):
         
         # Set labels and titles
         axes[-1].set_xlabel('Time')
-        if idx < num_patients // 2:
-            fig.suptitle(f'Intermediate Patient {idx + 1} Progression')
-        else:
-            fig.suptitle(f'Severe Patient {idx + 1 - num_patients // 2} Progression')
-
+        fig.suptitle(f'Patient {idx + 1} Progression')
         fig.tight_layout(rect=[0, 0.02, 1, 0.98])
         st.pyplot(fig)
 
@@ -274,7 +243,7 @@ st.header("ODE System for EB Biomarkers")
 # Display the ODE System
 st.latex(r"""
 \begin{aligned}
-\frac{dC}{dt} &= (r_C + \delta) C \left(1 - \frac{C}{K_C} \right) \\
+\frac{dC}{dt} &= r_C C \left(1 - \frac{C}{K_C} \right) \\
 \frac{dH}{dt} &= r_H H \left(1 - \frac{H}{K_H} \right) + \alpha_{HI} \left(\frac{I}{K_I} \right) \\
 \frac{dW}{dt} &= r_W W \left(1 - \frac{W}{K_W} \right) \\
 \frac{dA}{dt} &= r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \left(\frac{W}{K_W} \right) \\
@@ -308,14 +277,6 @@ with st.expander("📊 **Mathematical Explanation**"):
       - \( A \) (Albumin) increases with \( W \) (Weight), controlled by \( \alpha_{AW} \).  
     """)
 
-    st.markdown(r"""
-    **Extra Growth Modification:**
-    
-    $$ (r_C + \delta) C \left(1 - \frac{C}{K_C} \right) $$
-    
-    - Unlike other biomarkers, \( C \) (CRP) has an **additional term** \( \delta \) modifying its growth rate.  
-    """)
-
 
 with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
@@ -331,9 +292,6 @@ with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
       - Hemoglobin $ H $ grows when iron $ I $ is high.  
       $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \frac{W}{K_W} $$
       - Albumin $ A $ grows when weight $ W $ is high.  
-
-    - The term $ \delta $ **modifies** how $ C $ (CRP) grows, making it different from the others:  
-      $$ \frac{dC}{dt} = (r_C + \delta) C \left(1 - \frac{C}{K_C} \right) $$
     """)
 
 
@@ -391,28 +349,16 @@ with st.sidebar.expander("🔍 What Does This Mean?"):
 
 # Initial conditions
 # Intermediate Group inputs
-st.sidebar.markdown("## Intermediate Group")
 st.sidebar.markdown("#### Mean of Biomarker")
-mean_H_simu_inter = st.sidebar.number_input('Intermediate Haemoglobin', value=10.6)
-mean_W_simu_inter = st.sidebar.number_input('Intermediate BMI', value=14.0)
-mean_A_simu_inter = st.sidebar.number_input('Intermediate Albumin', value=3.8)
-mean_I_simu_inter = st.sidebar.number_input('Intermediate Iron', value=32.5)
-mean_C_simu_inter = st.sidebar.number_input('Intermediate CRP', value=19.0)
+mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=10.6)
+mean_W_simu_inter = st.sidebar.number_input('BMI', value=14.0)
+mean_A_simu_inter = st.sidebar.number_input('Albumin', value=3.8)
+mean_I_simu_inter = st.sidebar.number_input('Iron', value=32.5)
+mean_C_simu_inter = st.sidebar.number_input('CRP', value=19.0)
 
 st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_inter = st.sidebar.number_input('Intermediate CRP', value=29.0)
+std_C_inter = st.sidebar.number_input('CRP', value=29.0)
 
-# Severe Group inputs
-st.sidebar.markdown("## Severe Group")
-st.sidebar.markdown("#### Mean of Biomarker")
-mean_H_simu_se = st.sidebar.number_input('Severe Haemoglobin', value=8.4)
-mean_W_simu_se = st.sidebar.number_input('Severe BMI', value=14.0)
-mean_A_simu_se = st.sidebar.number_input('Severe Albumin', value=2.8)
-mean_I_simu_se = st.sidebar.number_input('Severe Iron', value=16.4)
-mean_C_simu_se = st.sidebar.number_input('Severe CRP', value=74.0)
-
-st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_se = st.sidebar.number_input('Severe CRP', value=55.0)
 
 # Sidebar option to visualize distributions
 if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
@@ -429,16 +375,6 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
         mean_I=mean_I_simu_inter,
         group_name="Intermediate"
     )
-
-    # Visualize severe group distribution
-    plot_initial_conditions_distributions(
-        mean_C=mean_C_simu_se,
-        std_C=std_C_se,
-        mean_H=mean_H_simu_se,
-        mean_W=mean_W_simu_se,
-        mean_A=mean_A_simu_se,
-        mean_I=mean_I_simu_se,
-        group_name="Severe"
     )
 
 
@@ -451,11 +387,6 @@ r_H1 = st.sidebar.slider('Haemoglobin', min_value=-1.0, max_value=1.0, value=-0.
 r_W1 = st.sidebar.slider('BMI', min_value=-1.0, max_value=1.0, value=-0.05, step=0.01, format="%.2f")
 r_A1 = st.sidebar.slider('Albumin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
 r_I1 = st.sidebar.slider('Iron', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
-
-st.sidebar.markdown("## Difference in Growth/Decay Rate for Severe Group Relative to Intermediate Group to Differentiate Patient Severity")
-st.sidebar.markdown("A positive correlation means that as one variable increases or decreases, the other tends to change in the same direction. A negative correlation means that as one variable increases, the other tends to decrease, and vice versa. The larger the absolute value, the stronger the correlation.")
-
-delta1 = st.sidebar.slider('CRP Growth/Decay Difference', min_value=-1.0, max_value=1.0, value=0.1, step=0.01, format="%.2f")
 
 st.sidebar.markdown("## How the First Biomarker Influences the Second One")
 alpha_HI1 = st.sidebar.slider('Iron - Hemoglobin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
@@ -472,10 +403,9 @@ noise_level = st.sidebar.number_input('Variability Level', min_value=0.0, max_va
 if st.sidebar.button('Run Simulation'):
     # Convert parameters to the appropriate format
     params1 = [r_C1, r_H1, r_W1, r_A1, r_I1,
-               alpha_HI1, alpha_AW1, delta1]
+               alpha_HI1, alpha_AW1]
     st.session_state['params1'] = params1
 
-    
     # Adjust noise level
     noise_C_std = noise_level * 40
     noise_H_std = noise_level * 2.5  # std_H
@@ -495,18 +425,9 @@ if st.sidebar.button('Run Simulation'):
         mean_A_simu_inter,
         mean_I_simu_inter
     )
-    simu_init_se = generate_initial_conditions(
-        num_patient,
-        mean_C_simu_se,
-        std_C_se,
-        mean_H_simu_se,
-        mean_W_simu_se,
-        mean_A_simu_se,
-        mean_I_simu_se
-    )
     
     # Time points
-    num_simu_patient = 2 * num_patient
+    num_simu_patient = num_patient
     time_points_simu = [[i for i in range(16)] for _ in range(num_simu_patient)]
     
     # Maxes
@@ -519,7 +440,7 @@ if st.sidebar.button('Run Simulation'):
 
     # Run the simulation
     final_data = concatenate_data_diff_noise(
-        simu_init_inter, simu_init_se, time_points_simu,
+        simu_init_inter, time_points_simu,
         maxes, params1, noise_std, noise=add_noise, type='hypo'
     )
 
@@ -546,8 +467,7 @@ variability_level_value = noise_level if add_noise else "N/A"
 
 # Collect mean values at birth for intermediate and severe groups
 birth_means_var = [
-    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter, mean_C_simu_inter, std_C_inter,
-    mean_H_simu_se, mean_W_simu_se, mean_A_simu_se, mean_I_simu_se, mean_C_simu_se, std_C_se
+    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter, mean_C_simu_inter, std_C_inter
 ]
 
 # Save parameters section
