@@ -563,16 +563,25 @@ def plot_fixed_biomarker_trajectories():
             percentiles = st.session_state["percentiles"]
             time_grid = st.session_state["time_grid"]
 
-            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="black", label="5th percentile")
-            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", label="50th percentile (Median)")
-            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
+            # ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="black", label="5th percentile")
+            # ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", label="50th percentile (Median)")
+            # ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="black", label="95th percentile")
+
+            ax.plot(time_grid, percentiles[5][:, i], linestyle="--", color="gray", alpha=0.5, linewidth=1, label="5th percentile")
+            ax.plot(time_grid, percentiles[50][:, i], linestyle="-", color="black", alpha=0.5, linewidth=1, label="50th percentile (Median)")
+            ax.plot(time_grid, percentiles[95][:, i], linestyle="--", color="gray", alpha=0.5, linewidth=1, label="95th percentile")
+
 
         # Overlay user-generated patient trajectories in darker colors
         if "simulation_results" in st.session_state:
-            patient_data = st.session_state["simulation_results"]
-            for patient in patient_data:
-                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
+            # patient_data = st.session_state["simulation_results"]
+            # for patient in patient_data:
+                # ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=2, alpha=0.8)
 
+            for patient in st.session_state["simulation_results"]:
+                ax.plot(patient[:, -1], patient[:, i], color=dark_colors[i], linewidth=3, alpha=1, label="Patient Trajectory")
+
+        
         ax.legend()
 
     plt.tight_layout()
