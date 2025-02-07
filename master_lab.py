@@ -404,8 +404,9 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
 # Parameters to adjust
 st.sidebar.markdown("## Growth/Deacay Rate of Different Biomarkers")
 st.sidebar.markdown("A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.")
-st.sidebar.markdown(r"$r_C$ (CRP Growth Rate)")
-r_C1 = st.sidebar.slider("", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+# st.sidebar.markdown(r"$r_C$ (CRP Growth Rate)")
+# r_C1 = st.sidebar.slider("", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+r_C1 = st.sidebar.slider(r"$r_C$ (CRP Growth Rate)", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 
 # r_C1 = st.sidebar.slider('CRP', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 r_H1 = st.sidebar.slider('Haemoglobin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
