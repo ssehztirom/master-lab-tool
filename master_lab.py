@@ -269,32 +269,6 @@ st.latex(r"""
 \end{aligned}
 """)
 
-# Explanation with full LaTeX
-with st.expander("📊 **Mathematical Explanation**"):
-    st.markdown(r"""
-    **Growth Terms:**
-    
-    $$ \frac{dX}{dt} = r_X X \left(1 - \frac{X}{K_X} \right) $$
-    
-    where \( X \in \{C, H, W, A, I\} \).
-    
-    - Each biomarker \( X \) follows a **logistic growth model**.  
-    - The term \( r_X X \) represents **natural growth**.  
-    - The factor \( \left(1 - \frac{X}{K_X} \right) \) ensures that growth slows  
-      as \( X \) approaches its **carrying capacity** \( K_X \).  
-    """)
-
-    st.markdown(r"""
-    **Interaction Terms:**
-    
-    $$ \alpha_{HI} \frac{I}{K_I}, \quad \alpha_{AW} \frac{W}{K_W} $$
-    
-    - Some biomarkers depend on others:  
-      - \( H \) (Hemoglobin) receives an **additional boost** from \( I \) (Iron),  
-        scaled by \( \alpha_{HI} \).  
-      - \( A \) (Albumin) increases with \( W \) (Weight), controlled by \( \alpha_{AW} \).  
-    """)
-
 
 with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
     st.markdown(r"""
@@ -321,7 +295,7 @@ with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
       
       $$ \frac{dA}{dt} = r_A A \left(1 - \frac{A}{K_A} \right) + \alpha_{AW} \frac{W}{K_W} $$  
       
-      - Similarly, when $ \alpha_{AW} > 0 $, a higher weight ($ W $) supports the growth of albumin ($ A $).  
+      - Similarly, when $ \alpha_{AW} < 0 $, a higher weight ($ W $) suppresses the growth of albumin ($ A $).  
     """)
 
 
