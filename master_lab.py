@@ -418,10 +418,10 @@ alpha_HI1 = st.sidebar.slider(r"$\alpha_{HI}$", min_value=-0.3, max_value=0.3, v
 alpha_AW1 = st.sidebar.slider(r"$\alpha_{AB}$", min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 
 
-st.sidebar.markdown("## Variability")
-st.sidebar.markdown("If you choose not to add variability, you can leave the variability level alone.")
-add_noise = st.sidebar.checkbox('Add Variability', False)
-noise_level = st.sidebar.number_input('Variability Level', min_value=0.0, max_value=1.0, value=0.0, step=0.1, format="%.1f")
+st.sidebar.markdown("## Noise")
+st.sidebar.markdown("If you choose not to add noise, you can leave the noise level alone.")
+add_noise = st.sidebar.checkbox('Add Noise', False)
+noise_level = st.sidebar.number_input('Noise Level', min_value=0.0, max_value=1.0, value=0.0, step=0.1, format="%.1f")
 
 
 
