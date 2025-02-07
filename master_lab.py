@@ -472,7 +472,7 @@ def simulate_patient_data(num_patients, time_points, init_conditions, maxes, par
         
         # Apply noise
         if add_noise:
-            patient_data = process_data(patient_data, len(t), True, noise_std)
+            patient_data = process_data(patient_data, len(t), add_noise, noise_std)
 
         # Store each patient’s data
         patient_data = np.hstack([patient_data, t.reshape(-1, 1)])  # Add time column
