@@ -422,7 +422,7 @@ alpha_AW1 = st.sidebar.slider('BMI - Albumin', min_value=-1.0, max_value=1.0, va
 st.sidebar.markdown("## Variability")
 st.sidebar.markdown("If you choose not to add variability, you can leave the variability level alone.")
 add_noise = st.sidebar.checkbox('Add Variability', True)
-noise_level = st.sidebar.number_input('Variability Level', min_value=0.0, max_value=2.0, value=0.5, step=0.1, format="%.1f")
+noise_level = st.sidebar.number_input('Variability Level', min_value=0.0, max_value=2.0, value=0.2, step=0.1, format="%.1f")
 
 
 
