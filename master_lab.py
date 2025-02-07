@@ -317,7 +317,7 @@ with st.expander("🧑‍🤝‍🧑 **Simple Explanation Using Math**"):
 
 st.markdown("""
 **Instructions:**
-- Adjust the parameters in the sidebar, where each parameter includes a brief description. The default values serve as initial estimates.
+- Adjust the parameters in the sidebar, where each parameter includes a brief description. 
 - Click **"Run Simulation"** to update the results.
 - Click **"Save Parameters"** to store the parameter settings you find reasonable.
 """)
