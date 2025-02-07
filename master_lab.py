@@ -371,14 +371,14 @@ with st.sidebar.expander("🔍 What Does This Mean?"):
 # Initial conditions
 # Intermediate Group inputs
 st.sidebar.markdown("#### Mean of Biomarker")
-mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=10.6)
-mean_W_simu_inter = st.sidebar.number_input('BMI', value=14.0)
-mean_A_simu_inter = st.sidebar.number_input('Albumin', value=3.8)
-mean_I_simu_inter = st.sidebar.number_input('Iron', value=32.5)
-mean_C_simu_inter = st.sidebar.number_input('CRP', value=19.0)
+mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=0.0)
+mean_W_simu_inter = st.sidebar.number_input('BMI', value=0.0)
+mean_A_simu_inter = st.sidebar.number_input('Albumin', value=0.0)
+mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0)
+mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0)
 
 st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_inter = st.sidebar.number_input('CRP', value=29.0)
+std_C_inter = st.sidebar.number_input('CRP', value=0.0)
 
 
 # Sidebar option to visualize distributions
@@ -408,15 +408,15 @@ if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
 # Parameters to adjust
 st.sidebar.markdown("## Growth/Deacay Rate of Different Biomarkers")
 st.sidebar.markdown("A positive value for the growth/decay rate indicates that the biomarker tends to increase (growth) over time, while a negative value indicates a decrease (decay) over time.")
-r_C1 = st.sidebar.slider('CRP', min_value=-1.0, max_value=1.0, value=0.1, step=0.01, format="%.2f")
-r_H1 = st.sidebar.slider('Haemoglobin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
-r_W1 = st.sidebar.slider('BMI', min_value=-1.0, max_value=1.0, value=-0.05, step=0.01, format="%.2f")
-r_A1 = st.sidebar.slider('Albumin', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
-r_I1 = st.sidebar.slider('Iron', min_value=-1.0, max_value=1.0, value=-0.1, step=0.01, format="%.2f")
+r_C1 = st.sidebar.slider('CRP', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+r_H1 = st.sidebar.slider('Haemoglobin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+r_W1 = st.sidebar.slider('BMI', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+r_A1 = st.sidebar.slider('Albumin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+r_I1 = st.sidebar.slider('Iron', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 
 st.sidebar.markdown("## How the First Biomarker Influences the Second One")
-alpha_HI1 = st.sidebar.slider('Iron - Hemoglobin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
-alpha_AW1 = st.sidebar.slider('BMI - Albumin', min_value=-1.0, max_value=1.0, value=0.05, step=0.01, format="%.2f")
+alpha_HI1 = st.sidebar.slider('Iron - Hemoglobin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
+alpha_AW1 = st.sidebar.slider('BMI - Albumin', min_value=-0.3, max_value=0.3, value=0.0, step=0.01, format="%.2f")
 
 
 st.sidebar.markdown("## Variability")
