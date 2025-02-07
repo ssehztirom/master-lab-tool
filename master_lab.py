@@ -433,7 +433,7 @@ noise_level = st.sidebar.number_input('Noise Level', min_value=0.0, max_value=1.
 def generate_patient_time_points(num_patients, max_time=15):
     time_points = []
     for _ in range(num_patients):
-        num_time_steps = np.random.randint(5, 20)  # Random number of time points per patient
+        num_time_steps = np.random.randint(6, 20)  # Random number of time points per patient
         time_points.append(sorted(np.random.uniform(0, max_time, num_time_steps)))
     return time_points
 
@@ -620,8 +620,10 @@ if st.sidebar.button('Run Simulation'):
 
     # Generate patient time points
     max_time = 15
-    time_points_simu = [[i for i in range(16)] for _ in range(num_patients)]  # Fixed time steps
+    # time_points_simu = [[i for i in range(16)] for _ in range(num_patients)]  # Fixed time steps
+    time_points_simu = generate_patient_time_points(num_patients, max_time)
 
+    
     # Define ODE parameters
     maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
     noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
