@@ -139,13 +139,7 @@ def resample_positive(mean, std, size):
         values[negative_indices] = np.random.normal(loc=mean, scale=std, size=negative_indices.sum())
     return values
 
-def generate_initial_conditions(num_patient, mean_C, std_C, mean_H, mean_W, mean_A, mean_I):
-
-    sigma_sq = math.log(1 + (std_C / mean_C)**2)
-    mu = math.log(mean_C) - (sigma_sq / 2)
-    sigma = math.sqrt(sigma_sq)
-    # C_simu = lognorm.rvs(s=sigma, scale=np.exp(mu), size=num_patient)
-    
+def generate_initial_conditions(num_patient, mean_C, mean_H, mean_W, mean_A, mean_I):
     C_simu = resample_positive(mean=mean_C, std=29, size=(num_patient,))
     H_simu = resample_positive(mean=mean_H, std=2.5, size=(num_patient,))
     W_simu = resample_positive(mean=mean_W, std=2.3, size=(num_patient,))
@@ -190,19 +184,19 @@ def plot_simulation(final_data):
         fig.tight_layout(rect=[0, 0.02, 1, 0.98])
         st.pyplot(fig)
 
-def generate_log_normal_samples(mean_C, std_C, num_samples=1000):
-    sigma_sq = np.log(1 + (std_C / mean_C) ** 2)  # Log variance
-    mu = np.log(mean_C) - (sigma_sq / 2)  # Log mean
-    sigma = np.sqrt(sigma_sq)  # Log std dev
-    return lognorm.rvs(s=sigma, scale=np.exp(mu), size=num_samples)
+# def generate_log_normal_samples(mean_C, std_C, num_samples=1000):
+    # sigma_sq = np.log(1 + (std_C / mean_C) ** 2)  # Log variance
+    # mu = np.log(mean_C) - (sigma_sq / 2)  # Log mean
+    # sigma = np.sqrt(sigma_sq)  # Log std dev
+    # return lognorm.rvs(s=sigma, scale=np.exp(mu), size=num_samples)
 
 
-def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A, mean_I):
+def plot_initial_conditions_distributions(mean_C, mean_H, mean_W, mean_A, mean_I):
     num_samples = 1000  # Number of samples to plot the distributions
 
     # Generate samples for each biomarker
     # C_samples = generate_log_normal_samples(mean_C, std_C, num_samples)
-    C_samples = np.random.normal(mean_C, std_C, num_samples)
+    C_samples = np.random.normal(mean_C, 29, num_samples)
     H_samples = np.random.normal(mean_H, 2.5, num_samples)
     W_samples = np.random.normal(mean_W, 2.3, num_samples)
     A_samples = np.random.normal(mean_A, 0.9, num_samples)
@@ -363,52 +357,32 @@ as well as **mean** and **standard deviation** for CRP.
 
 with st.sidebar.expander("🔍 What Distributions Are Used?"):
     st.markdown("""
-    - The initial conditions for hemoglobin, BMI, albumin, and iron follow **normal distributions**.  
-    - CRP follows a **log-normal distribution**, meaning the **mean** and **standard deviation** you enter  
-      are in the **original (linear) scale** and will be transformed into log-space parameters  
-      before generating CRP samples.
-    """)
-
-# Collapsible explanation section
-with st.sidebar.expander("🔍 What Does This Mean?"):
-    st.markdown("""
+    - The initial conditions for all 5 biomakers follow **normal distributions**.  
     - The distributions specified here are used **to generate the initial conditions** of the biomarkers.  
-    - The **mean** and **standard deviation** you enter for CRP are in the **original (linear) scale**.  
-    - They will be **transformed into log-space parameters** before generating CRP samples.
-    """)
-with st.sidebar.expander("📍 Warning"):
-    st.markdown("""
-    Both CRP mean and std can't be 0!
     """)
 
 
 # Initial conditions
 # Intermediate Group inputs
 st.sidebar.markdown("#### Mean of Biomarker")
+mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0, step=0.1, format="%.1f")
 mean_H_simu_inter = st.sidebar.number_input('Haemoglobin', value=0.0, step=0.1, format="%.1f")
 mean_W_simu_inter = st.sidebar.number_input('BMI', value=0.0, step=0.1, format="%.1f")
 mean_A_simu_inter = st.sidebar.number_input('Albumin', value=0.0, step=0.1, format="%.1f")
 mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0, step=0.1, format="%.1f")
-mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0, step=0.1, format="%.1f")
 
-st.sidebar.markdown("#### Standard Deviation of CRP")
-std_C_inter = st.sidebar.number_input('std CRP', value=0.0, step=0.1, format="%.1f")
+# st.sidebar.markdown("#### Standard Deviation of CRP")
+# std_C_inter = st.sidebar.number_input('std CRP', value=0.0, step=0.1, format="%.1f")
 
 
 # Sidebar option to visualize distributions
-if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
-    st.markdown("## Initial Conditions Distributions")
-    st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
+# if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
+    # st.markdown("## Initial Conditions Distributions")
+    # st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
 
     # Visualize intermediate group distribution
-    plot_initial_conditions_distributions(
-        mean_C=mean_C_simu_inter,
-        std_C=std_C_inter,
-        mean_H=mean_H_simu_inter,
-        mean_W=mean_W_simu_inter,
-        mean_A=mean_A_simu_inter,
-        mean_I=mean_I_simu_inter
-    )
+    # plot_initial_conditions_distributions(
+        # mean_C=mean_C_simu_inter, std_C=std_C_inter, mean_H=mean_H_simu_inter, mean_W=mean_W_simu_inter, mean_A=mean_A_simu_inter, mean_I=mean_I_simu_inter)
     
 
 
@@ -676,7 +650,7 @@ if st.sidebar.button('Run Simulation'):
     # Generate initial conditions
     num_patients = 3  # Only 3 patients for simulation
     simu_init = generate_initial_conditions(
-        num_patients, mean_C_simu_inter, std_C_inter,
+        num_patients, mean_C_simu_inter,
         mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter
     )
 
@@ -719,7 +693,7 @@ variability_level_value = noise_level if add_noise else "N/A"
 
 # Collect mean values at birth for intermediate and severe groups
 birth_means_var = [
-    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter, mean_C_simu_inter, std_C_inter
+    mean_H_simu_inter, mean_W_simu_inter, mean_A_simu_inter, mean_I_simu_inter, mean_C_simu_inter
 ]
 
 # Save parameters section
