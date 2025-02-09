@@ -491,7 +491,7 @@ time_points_simu = generate_patient_time_points(num_patients, max_time)
 
 # Generate initial conditions for 20 patients
 simu_init = generate_initial_conditions(
-    num_patients, 19, 29,
+    num_patients, 19,
     10.6, 14, 3.8, 32.5
 )
 
