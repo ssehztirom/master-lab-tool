@@ -140,11 +140,11 @@ def resample_positive(mean, std, size):
     return values
 
 def generate_initial_conditions(num_patient, mean_C, mean_H, mean_W, mean_A, mean_I):
-    C_simu = resample_positive(mean=mean_C, std=29, size=(num_patient,))
+    C_simu = resample_positive(mean=mean_C, std=9, size=(num_patient,))
     H_simu = resample_positive(mean=mean_H, std=2.5, size=(num_patient,))
     W_simu = resample_positive(mean=mean_W, std=2.3, size=(num_patient,))
     A_simu = resample_positive(mean=mean_A, std=0.9, size=(num_patient,))
-    I_simu = resample_positive(mean=mean_I, std=21, size=(num_patient,))
+    I_simu = resample_positive(mean=mean_I, std=9, size=(num_patient,))
     
     simu_init = np.stack([C_simu, H_simu, W_simu, A_simu, I_simu])
     return simu_init
@@ -196,11 +196,11 @@ def plot_initial_conditions_distributions(mean_C, mean_H, mean_W, mean_A, mean_I
 
     # Generate samples for each biomarker
     # C_samples = generate_log_normal_samples(mean_C, std_C, num_samples)
-    C_samples = np.random.normal(mean_C, 29, num_samples)
+    C_samples = np.random.normal(mean_C, 9, num_samples)
     H_samples = np.random.normal(mean_H, 2.5, num_samples)
     W_samples = np.random.normal(mean_W, 2.3, num_samples)
     A_samples = np.random.normal(mean_A, 0.9, num_samples)
-    I_samples = np.random.normal(mean_I, 21, num_samples)
+    I_samples = np.random.normal(mean_I, 9, num_samples)
 
     # Create subplots with two rows: first row for CRP and Hemoglobin, second row for BMI, Albumin, and Iron
     fig, axes = plt.subplots(2, 3, figsize=(20, 12))
@@ -497,7 +497,7 @@ simu_init = generate_initial_conditions(
 # Define ODE parameters
 maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
 params = [0.1, -0.1, -0.05, -0.1, -0.1, 0.05, 0.05]
-noise_std = [40 * 0.1, 2.5 * 0.1, 2.3 * 0.1, 0.9 * 0.1, 21 * 0.1]
+noise_std = [9 * 0.1, 2.5 * 0.1, 2.3 * 0.1, 0.9 * 0.1, 9 * 0.1]
 
 # Simulate patient data
 final_data = concatenate_data_diff_noise(
@@ -541,7 +541,7 @@ if "baseline_data" not in st.session_state:
 
     maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
     params = [0.1, -0.1, -0.05, -0.1, -0.1, 0.05, 0.05]
-    noise_std = [40 * 0.1, 2.5 * 0.1, 2.3 * 0.1, 0.9 * 0.1, 21 * 0.1]
+    noise_std = [9 * 0.1, 2.5 * 0.1, 2.3 * 0.1, 0.9 * 0.1, 9 * 0.1]
 
     st.session_state["baseline_data"] = concatenate_data_diff_noise(
         simu_init, time_points_simu, maxes, params, noise_std, noise=True, type='hypo'
@@ -661,7 +661,7 @@ if st.sidebar.button('Run Simulation'):
     
     # Define ODE parameters
     maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
-    noise_std = [40 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 21 * noise_level]
+    noise_std = [9 * noise_level, 2.5 * noise_level, 2.3 * noise_level, 0.9 * noise_level, 9 * noise_level]
 
     # Simulate patient data
     final_data = concatenate_data_diff_noise(
