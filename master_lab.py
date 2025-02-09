@@ -144,8 +144,9 @@ def generate_initial_conditions(num_patient, mean_C, std_C, mean_H, mean_W, mean
     sigma_sq = math.log(1 + (std_C / mean_C)**2)
     mu = math.log(mean_C) - (sigma_sq / 2)
     sigma = math.sqrt(sigma_sq)
-    C_simu = lognorm.rvs(s=sigma, scale=np.exp(mu), size=num_patient)
+    # C_simu = lognorm.rvs(s=sigma, scale=np.exp(mu), size=num_patient)
     
+    C_simu = resample_positive(mean=mean_C, std=29, size=(num_patient,))
     H_simu = resample_positive(mean=mean_H, std=2.5, size=(num_patient,))
     W_simu = resample_positive(mean=mean_W, std=2.3, size=(num_patient,))
     A_simu = resample_positive(mean=mean_A, std=0.9, size=(num_patient,))
@@ -200,7 +201,8 @@ def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A,
     num_samples = 1000  # Number of samples to plot the distributions
 
     # Generate samples for each biomarker
-    C_samples = generate_log_normal_samples(mean_C, std_C, num_samples)
+    # C_samples = generate_log_normal_samples(mean_C, std_C, num_samples)
+    C_samples = np.random.normal(mean_C, std_C, num_samples)
     H_samples = np.random.normal(mean_H, 2.5, num_samples)
     W_samples = np.random.normal(mean_W, 2.3, num_samples)
     A_samples = np.random.normal(mean_A, 0.9, num_samples)
@@ -215,7 +217,7 @@ def plot_initial_conditions_distributions(mean_C, std_C, mean_H, mean_W, mean_A,
     axes[0, 0].set_title("CRP Distribution")
     axes[0, 0].set_xlabel("CRP")
     axes[0, 0].set_ylabel("Frequency")
-    axes[0, 0].set_xlim(0, 150)  # Adjusted x-axis limits for clarity
+    # axes[0, 0].set_xlim(0, 150)  # Adjusted x-axis limits for clarity
 
     sns.histplot(H_samples, kde=True, ax=axes[0, 1], color="mediumseagreen", edgecolor="black", alpha=0.7)
     axes[0, 1].set_title("Haemoglobin Distribution")
