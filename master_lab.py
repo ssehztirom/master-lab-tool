@@ -374,7 +374,10 @@ with st.sidebar.expander("🔍 What Does This Mean?"):
     - The **mean** and **standard deviation** you enter for CRP are in the **original (linear) scale**.  
     - They will be **transformed into log-space parameters** before generating CRP samples.
     """)
-
+with st.sidebar.expander("📍 Warning"):
+    st.markdown("""
+    Both CRP mean and std can't be 0!
+    """)
 
 
 # Initial conditions
@@ -387,10 +390,6 @@ mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0, step=0.1, format=
 mean_C_simu_inter = st.sidebar.number_input('CRP', value=0.0, step=0.1, format="%.1f")
 
 st.sidebar.markdown("#### Standard Deviation of CRP")
-with st.sidebar.expander("📍 Warning"):
-    st.markdown("""
-    It can't be 0!
-    """)
 std_C_inter = st.sidebar.number_input('std CRP', value=0.0, step=0.1, format="%.1f")
 
 
