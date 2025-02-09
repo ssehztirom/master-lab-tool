@@ -375,14 +375,14 @@ mean_I_simu_inter = st.sidebar.number_input('Iron', value=0.0, step=0.1, format=
 # std_C_inter = st.sidebar.number_input('std CRP', value=0.0, step=0.1, format="%.1f")
 
 
-# Sidebar option to visualize distributions
-# if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
-    # st.markdown("## Initial Conditions Distributions")
-    # st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
+Sidebar option to visualize distributions
+if st.sidebar.checkbox("Visualize Initial Conditions Distributions"):
+    st.markdown("## Initial Conditions Distributions")
+    st.markdown("This section allows you to view the distribution of initial conditions based on the specified means and predefined standard deviations.")
 
-    # Visualize intermediate group distribution
-    # plot_initial_conditions_distributions(
-        # mean_C=mean_C_simu_inter, std_C=std_C_inter, mean_H=mean_H_simu_inter, mean_W=mean_W_simu_inter, mean_A=mean_A_simu_inter, mean_I=mean_I_simu_inter)
+    Visualize intermediate group distribution
+    plot_initial_conditions_distributions(
+        mean_C=mean_C_simu_inter, mean_H=mean_H_simu_inter, mean_W=mean_W_simu_inter, mean_A=mean_A_simu_inter, mean_I=mean_I_simu_inter)
     
 
 
