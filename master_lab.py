@@ -536,7 +536,7 @@ if "baseline_data" not in st.session_state:
     time_points_simu = generate_patient_time_points(num_patients, max_time)
 
     simu_init = generate_initial_conditions(
-        num_patients, 19, 29, 10.6, 14, 3.8, 32.5
+        num_patients, 19, 10.6, 14, 3.8, 32.5
     )
 
     maxes = (200.0, 15.0, 25.0, 5.0, 160.0)
