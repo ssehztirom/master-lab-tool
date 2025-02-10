@@ -42,9 +42,7 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
     except gspread.exceptions.APIError as e:
         st.error(f"API Error: {e}")
 
-
 ### Function Definitions
-
 def ode_system(y, t, K_C, K_H, K_W, K_A, K_I, r_C, r_H, r_W, r_A, r_I,
                 alpha_HI, alpha_AW):
     C, H, W, A, I = y
