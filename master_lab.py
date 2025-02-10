@@ -246,10 +246,10 @@ def plot_initial_conditions_distributions(mean_C, mean_H, mean_W, mean_A, mean_I
 plt.style.use('ggplot')
 
 
-st.title("RDEB Patient Progression Simulation")
+st.title("EB Patient Progression Simulation")
 
 st.markdown("""
-Welcome to **RDEB Patient Progression Simulation App**. This app allows you to adjust simulation parameters and visualize the impact on RDEB patient outcomes.
+Welcome to **EB Patient Progression Simulation App**. This app allows you to adjust simulation parameters and visualize the impact on EB patient outcomes.
 """)
 
 
