@@ -11,7 +11,6 @@ params1 = []
 if 'parameters_saved' not in st.session_state:
     st.session_state['parameters_saved'] = False
 
-
 def find_empty_row(sheet):
     """Find the first empty row in Column A."""
     col_A = sheet.col_values(1)  # Get all values in column A
@@ -42,8 +41,6 @@ def save_parameters(name, comment, parameters, add_variability, variability_leve
 
     except gspread.exceptions.APIError as e:
         st.error(f"API Error: {e}")
-
-
 
 
 ### Function Definitions
