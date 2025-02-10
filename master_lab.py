@@ -346,10 +346,9 @@ st.sidebar.title("Adjust Parameters")
 st.sidebar.markdown("""
 ### Enter Initial Biomarker Values
 
-Enter the **mean values** for hemoglobin, BMI, albumin, and iron,  
-as well as **mean** and **standard deviation** for CRP.  
+Enter the **mean values** for the 5 biomarkers.  
 
-**Note:** Standard deviations for hemoglobin, BMI, albumin, and iron are **predefined**.
+**Note:** Standard deviations are **predefined**.
 """)
 
 with st.sidebar.expander("🔍 What Distributions Are Used?"):
